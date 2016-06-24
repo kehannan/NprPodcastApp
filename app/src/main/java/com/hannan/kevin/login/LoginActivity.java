@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.hannan.kevin.nprapp2.AccessToken;
+import com.hannan.kevin.nprapp2.BuildConfig;
 import com.hannan.kevin.nprapp2.LoginService;
 import com.hannan.kevin.nprapp2.MainActivity;
 import com.hannan.kevin.nprapp2.R;
@@ -27,12 +28,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public static String OAUTH_URL = "https://api.npr.org/authorization/v2/authorize";
 
-
-    private final String clientSecret = "wVSmR4MdHbxMbBGaH2DnMKOf8LYr09J2KCC2stNB";
-    private final String redirectUri = "http://localhost/Callback";
-
     public static String CLIENT_ID = "nprone_trial_NFUsXLna6ZQu";
-    public static String CLIENT_SECRET = "mUCJZldRkHjDnO5LIR5HuuDiindpPqVbq7BKcno3";
+    public static String CLIENT_SECRET = BuildConfig.NPR_SECRET_KEY;
 
     public static String CALLBACK_URL = "myapp://callback";
 
