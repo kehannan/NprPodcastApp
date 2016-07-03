@@ -3,8 +3,6 @@ package com.hannan.kevin.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -13,10 +11,10 @@ import android.widget.Button;
 
 import com.hannan.kevin.nprapp2.AccessToken;
 import com.hannan.kevin.nprapp2.BuildConfig;
-import com.hannan.kevin.nprapp2.LoginService;
+import com.hannan.kevin.api.LoginService;
 import com.hannan.kevin.nprapp2.MainActivity;
 import com.hannan.kevin.nprapp2.R;
-import com.hannan.kevin.nprapp2.ServiceGenerator;
+import com.hannan.kevin.api.ServiceGenerator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -49,9 +47,7 @@ public class LoginActivity extends AppCompatActivity {
 
         manager = new SessionManager(this);
 
-        LoginService client = ServiceGenerator.createService(LoginService.class);
-
-
+//        LoginService client = ServiceGenerator.createService(LoginService.class);
 
         Button loginButton = (Button) findViewById(R.id.login_button);
 

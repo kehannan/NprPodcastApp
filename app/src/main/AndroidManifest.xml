@@ -16,21 +16,22 @@
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" >
-
-
-        </activity>
-        <activity android:name="com.hannan.kevin.login.SplashActivity" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="com.hannan.kevin.login.SplashActivity" >
+        </activity>
+
+        <service
+            android:name="com.hannan.kevin.api.PodcastFetchService" />
+
         <activity
             android:name="com.hannan.kevin.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar" >
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -41,6 +42,7 @@
                     android:scheme="myapp" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>

@@ -1,31 +1,19 @@
 package com.hannan.kevin.nprapp2;
 
-import android.accounts.AccountManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.hannan.kevin.api.PodcastFetchService;
+import com.hannan.kevin.login.LoginActivity;
 import com.hannan.kevin.login.SessionManager;
-
-import java.io.IOException;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,24 +22,40 @@ public class MainActivity extends AppCompatActivity {
 
     SessionManager manager;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-            Log.v(TAG, "onCreate()");
+        Log.v(TAG, "onCreate()");
 
-            manager = new SessionManager(this);
+        manager = new SessionManager(this);
 
-            TextView tokenView = (TextView) findViewById(R.id.token_view);
-
-            String token = manager.getToken();
-
-            tokenView.setText(token);
-
-            Log.v(TAG, "token " + token);
-
+        // if not logged in, start the login activity
+        if (!manager.isLoggedIn()) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
+
+        TextView tokenView = (TextView) findViewById(R.id.token_view);
+
+        String token = manager.getToken();
+
+        tokenView.setText(token);
+
+        Button getPodcastButton = (Button) findViewById(R.id.get_podcast_button);
+        getPodcastButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PodcastFetchService.class);
+                startService(intent);
+            }
+        });
+
+        Log.v(TAG, "token " + token);
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
