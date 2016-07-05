@@ -20,6 +20,12 @@
         android:text="Get Recommendations"
         />
 
+    <Button
+        android:id="@+id/logout_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Logout"/>
+
     <TextView
         android:id="@+id/token_view"
         android:layout_width="wrap_content"

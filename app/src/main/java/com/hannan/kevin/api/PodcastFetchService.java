@@ -1,14 +1,16 @@
 package com.hannan.kevin.api;
 
 import android.app.IntentService;
+import android.content.ContentValues;
 import android.content.Intent;
-
 import android.util.Log;
-
-
 import com.hannan.kevin.login.SessionManager;
+import com.hannan.kevin.model.Attributes;
 import com.hannan.kevin.model.ItemsList;
-
+import com.hannan.kevin.model.Links;
+import com.hannan.kevin.model.PodcastItem;
+import com.hannan.kevin.provider.DatabaseContract;
+import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -24,8 +26,6 @@ public class PodcastFetchService extends IntentService{
 
     public PodcastFetchService() {
         super("PodcastFetchService");
-
-
     }
 
     @Override
@@ -37,6 +37,8 @@ public class PodcastFetchService extends IntentService{
     private void getApiData() {
 
         String token = manager.getToken();
+        //prepend "Bearer "
+        token = SessionManager.BEARER_TAG + token;
 
         LoginService client = ServiceGenerator.createService(LoginService.class);
 
@@ -51,6 +53,25 @@ public class PodcastFetchService extends IntentService{
 
                 if (response.isSuccessful()) {
                     Log.v(TAG, "success!");
+
+                    //interate through objects
+                    ArrayList<PodcastItem> podcastItems = response.body().getItemsList();
+                    Log.v(TAG, "podcastItems size " + podcastItems.size());
+
+                    //ContentValues to be inserted
+                   ContentValues[] values = new ContentValues[podcastItems.size()];
+                    Log.v(TAG, "size of values " + values.length);
+                    Log.v(TAG, "size of podcast items " + podcastItems.size());
+
+                    for(int i = 0; i< podcastItems.size(); i++) {
+                        Log.v(TAG, " i " + i);
+
+                        values[i] = createPodcast(podcastItems.get(i));
+                    }
+
+                    //insert data in db with bulk insert
+                    int inserted_data = getApplicationContext().getContentResolver()
+                            .bulkInsert(DatabaseContract.BASE_CONTENT_URI, values);
                 }
             }
 
@@ -59,6 +80,30 @@ public class PodcastFetchService extends IntentService{
                 Log.v(TAG, "onFailure ");
             }
         });
+    }
+
+    private ContentValues createPodcast(PodcastItem podcastItem) {
+
+        ContentValues podcast_values = new ContentValues();
+
+        //insert podcast title
+        podcast_values.put(DatabaseContract.PodcastTable.TITLE, podcastItem.getAttributes().getTitle());
+
+        //insert audio href
+        podcast_values.put(DatabaseContract.PodcastTable.AUDIO_HREF, podcastItem.getLinks().getAudio().
+                get(0).getHref());
+
+        //insert image href
+
+        if (podcastItem.getLinks().getImage().size() != 0) {
+            Log.v(TAG, "image href " + podcastItem.getLinks().getImage().get(0).getHref());
+            podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF, podcastItem.getLinks().getImage().
+                    get(0).getHref());
+        } else {
+            podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF,"");
+            Log.v(TAG, "image href empty");
+        }
+        return podcast_values;
 
     }
 }

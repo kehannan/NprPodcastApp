@@ -1,12 +1,8 @@
 package com.hannan.kevin.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class PodcastItem {
 
+    private Attributes attributes;
     private Links links;
 
     /**
@@ -25,6 +21,24 @@ public class PodcastItem {
      */
     public void setLinks(Links links) {
         this.links = links;
+    }
+
+    /**
+     *
+     * @return
+     * The attributes
+     */
+    public Attributes getAttributes() {
+        return attributes;
+    }
+
+    /**
+     *
+     * @param attributes
+     * The attributes
+     */
+    public void setAttributes(Attributes attributes) {
+        this.attributes = attributes;
     }
 
 }

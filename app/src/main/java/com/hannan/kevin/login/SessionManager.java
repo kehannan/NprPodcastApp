@@ -15,7 +15,7 @@ public class SessionManager {
 
     private static final String TOKEN_KEY = "token_key";
 
-    private static final String BEARER_TAG = "Bearer "; //note the space
+    public static final String BEARER_TAG = "Bearer "; //note the space
 
     SharedPreferences.Editor editor;
     Context context;
@@ -32,9 +32,9 @@ public class SessionManager {
 
     public void setToken(String value) {
 
-        Log.v(TAG, "setToken() " + BEARER_TAG + value);
+        Log.v(TAG, "setToken() " + value);
 
-        editor.putString(TOKEN_KEY, BEARER_TAG + value);
+        editor.putString(TOKEN_KEY, value);
         editor.commit();
     }
 
@@ -60,6 +60,10 @@ public class SessionManager {
         SharedPreferences prefs = context.getSharedPreferences(NPR_APP, Context.MODE_PRIVATE);
         String position = prefs.getString(key, "");
         return position;
+    }
+
+    public void logout() {
+        setToken("");
     }
 }
 
