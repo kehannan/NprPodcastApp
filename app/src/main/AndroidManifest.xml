@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.hannan.kevin.nprapp2" >
+    package="com.hannan.kevin" >
 
-    <uses-permission android:name="android.permission.ACCOUNT_MANAGER" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
@@ -18,20 +17,24 @@
             android:theme="@style/AppTheme.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="com.hannan.kevin.login.SplashActivity" >
-        </activity>
+        <service android:name=".api.PodcastFetchService" />
 
-        <service
-            android:name="com.hannan.kevin.api.PodcastFetchService" />
+        <provider
+            android:name=".provider.PodcastProvider"
+            android:authorities="com.hannan.kevin.provider" >
+        </provider>
+
 
         <activity
-            android:name="com.hannan.kevin.login.LoginActivity"
-            android:label="@string/title_activity_login"
+            android:name=".login.LoginActivity2"
+            android:label="@string/title_activity_login2"
             android:theme="@style/AppTheme.NoActionBar" >
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -41,11 +44,6 @@
                     android:scheme="myapp" />
             </intent-filter>
         </activity>
-
-        <provider android:name="com.hannan.kevin.provider.PodcastProvider"
-                  android:authorities="com.hannan.kevin.provider">
-        </provider>
-
     </application>
 
 </manifest>

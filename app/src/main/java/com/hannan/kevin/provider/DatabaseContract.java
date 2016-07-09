@@ -23,5 +23,10 @@ public class DatabaseContract {
         public static final String TITLE = "title";
         public static final String AUDIO_HREF = "audio_href";
         public static final String IMAGE_HREF = "image_href";
+
+        public static Uri buildPodcasts() {
+            return BASE_CONTENT_URI.buildUpon().appendPath("podcasts").build();
+        }
+
     }
 }

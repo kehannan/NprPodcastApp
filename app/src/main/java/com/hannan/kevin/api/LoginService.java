@@ -2,10 +2,9 @@ package com.hannan.kevin.api;
 
 
 import com.hannan.kevin.model.ItemsList;
-import com.hannan.kevin.nprapp2.AccessToken;
+import com.hannan.kevin.AccessToken;
 
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;

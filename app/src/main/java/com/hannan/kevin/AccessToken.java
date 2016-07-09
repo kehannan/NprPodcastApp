@@ -1,4 +1,4 @@
-package com.hannan.kevin.nprapp2;
+package com.hannan.kevin;
 
 /**
  * Created by kehannan on 6/6/16.

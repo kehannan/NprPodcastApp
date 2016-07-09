@@ -1,4 +1,4 @@
-package com.hannan.kevin.nprapp2;
+package com.hannan.kevin;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,7 +12,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.hannan.kevin.api.PodcastFetchService;
-import com.hannan.kevin.login.LoginActivity;
+import com.hannan.kevin.login.LoginActivity2;
 import com.hannan.kevin.login.SessionManager;
 
 
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
 
         // if not logged in, start the login activity
         if (!manager.isLoggedIn()) {
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, LoginActivity2.class);
             startActivity(intent);
         }
 

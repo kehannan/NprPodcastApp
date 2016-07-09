@@ -25,9 +25,9 @@ public class PodcastProvider extends ContentProvider {
     static UriMatcher buildUriMatcher() {
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = DatabaseContract.CONTENT_AUTHORITY;
+        final String authority = DatabaseContract.CONTENT_AUTHORITY; // com.hannan.kevin.provider
 
-        matcher.addURI(authority, DatabaseContract.PODCASTS, PODCASTS);
+        matcher.addURI(authority, DatabaseContract.PODCASTS, PODCASTS); //authority, podcasts, 100
         return matcher;
     }
 
