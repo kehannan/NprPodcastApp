@@ -2,6 +2,7 @@ package com.hannan.kevin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -37,31 +38,32 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        TextView tokenView = (TextView) findViewById(R.id.token_view);
-
-        String token = manager.getToken();
-
-        tokenView.setText(token);
-
-        Button getPodcastButton = (Button) findViewById(R.id.get_podcast_button);
-        getPodcastButton.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PodcastFetchService.class);
-                startService(intent);
-            }
-        });
-
-        Button logoutButton = (Button) findViewById(R.id.logout_button);
-        logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                manager.logout();
-            }
-        });
-
-        Log.v(TAG, "token " + token);
+        
+//        TextView tokenView = (TextView) findViewById(R.id.token_view);
+//
+//        String token = manager.getToken();
+//
+//        tokenView.setText(token);
+//
+//        Button getPodcastButton = (Button) findViewById(R.id.get_podcast_button);
+//        getPodcastButton.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(MainActivity.this, PodcastFetchService.class);
+//                startService(intent);
+//            }
+//        });
+//
+//        Button logoutButton = (Button) findViewById(R.id.logout_button);
+//        logoutButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                manager.logout();
+//            }
+//        });
+//
+//        Log.v(TAG, "token " + token);
 
     }
 

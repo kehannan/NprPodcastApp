@@ -5,9 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
 import com.hannan.kevin.login.SessionManager;
-import com.hannan.kevin.model.Attributes;
 import com.hannan.kevin.model.ItemsList;
-import com.hannan.kevin.model.Links;
 import com.hannan.kevin.model.PodcastItem;
 import com.hannan.kevin.provider.DatabaseContract;
 import java.util.ArrayList;
@@ -70,8 +68,9 @@ public class PodcastFetchService extends IntentService{
                     }
 
                     //insert data in db with bulk insert
+                    Log.v(TAG, DatabaseContract.PodcastTable.allPodcasts().toString());
                     int inserted_data = getApplicationContext().getContentResolver()
-                            .bulkInsert(DatabaseContract.BASE_CONTENT_URI, values);
+                            .bulkInsert(DatabaseContract.PodcastTable.allPodcasts(), values);
                 }
             }
 

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import com.hannan.kevin.provider.DatabaseContract;
 
 public class PodcastSummaryFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
+
+    private static final String TAG = "PodcastSummaryFragment";
 
     public static final int PODCAST_LOADER = 0;
     PodcastAdapter adapter;
@@ -52,7 +55,7 @@ public class PodcastSummaryFragment extends Fragment
 
         return new CursorLoader(
                 getActivity(),                                  // parent activity context
-                DatabaseContract.PodcastTable.buildPodcasts(),  // Table to query
+                DatabaseContract.PodcastTable.allPodcasts(),    // Table to query
                 null,                                           // projection
                 null,                                           // selection clause
                 null,                                           // selection argument
@@ -63,6 +66,8 @@ public class PodcastSummaryFragment extends Fragment
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        Log.v(TAG, "onloadFinished()");
         adapter.swapCursor(data);
 
     }

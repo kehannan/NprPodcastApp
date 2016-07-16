@@ -13,28 +13,28 @@
     tools:showIn="@layout/activity_main"
     tools:context="com.hannan.kevin.MainActivity">
 
-    <Button
-        android:id="@+id/get_podcast_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Get Recommendations"
-        />
+    <fragment
+        class="com.hannan.kevin.PodcastSummaryFragment"
+        android:id="@+id/summary_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-    <Button
-        android:id="@+id/logout_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"/>
+    <!--<Button-->
+        <!--android:id="@+id/get_podcast_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Get Recommendations"-->
+        <!--/>-->
 
-    <TextView
-        android:id="@+id/token_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <!--<Button-->
+        <!--android:id="@+id/logout_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="Logout"/>-->
 
-
-
-    <!--<WebView-->
-        <!--android:id="@+id/webview"-->
+    <!--<TextView-->
+        <!--android:id="@+id/token_view"-->
         <!--android:layout_width="wrap_content"-->
         <!--android:layout_height="wrap_content"/>-->
+
 </LinearLayout>

@@ -3,12 +3,16 @@ package com.hannan.kevin.provider;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import com.hannan.kevin.provider.DatabaseContract.PodcastTable;
 
 /**
  * Created by khannan on 7/3/16.
  */
 public class PodcastDbHelper extends SQLiteOpenHelper{
+
+    private static final String TAG = "PodcastDbHelper";
 
     private static final int DATABASE_VERSION = 1;
 
@@ -27,8 +31,10 @@ public class PodcastDbHelper extends SQLiteOpenHelper{
                 + " (" + PodcastTable._ID + " INTEGER PRIMARY KEY, "
                 + PodcastTable.TITLE + " TEXT NOT NULL, "
                 + PodcastTable.AUDIO_HREF + " TEXT NOT NULL, "
-                + PodcastTable.IMAGE_HREF + "TEXT NOT NULL "
+                + PodcastTable.IMAGE_HREF + " TEXT NOT NULL "
                 + " );";
+
+        Log.v(TAG, "SQL " + SqlCreateScoresTable);
 
         sqLiteDatabase.execSQL(SqlCreateScoresTable);
     }

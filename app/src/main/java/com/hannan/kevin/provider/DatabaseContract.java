@@ -17,15 +17,15 @@ public class DatabaseContract {
 
     public static final class PodcastTable implements BaseColumns {
 
-        public static final String PODCAST_TABLE = "podcast_table";
+        public static final String PODCAST_TABLE = "podcasts_table";
 
         public static final String _ID = "_id";
         public static final String TITLE = "title";
         public static final String AUDIO_HREF = "audio_href";
         public static final String IMAGE_HREF = "image_href";
 
-        public static Uri buildPodcasts() {
-            return BASE_CONTENT_URI.buildUpon().appendPath("podcasts").build();
+        public static Uri allPodcasts() {
+            return BASE_CONTENT_URI.buildUpon().appendPath(PODCASTS).build();
         }
 
     }
