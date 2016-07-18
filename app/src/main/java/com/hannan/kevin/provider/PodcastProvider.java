@@ -93,6 +93,7 @@ public class PodcastProvider extends ContentProvider {
         Log.v(TAG, "Uri " + uri.toString());
 
         final SQLiteDatabase db = sPodcastDbHelper.getWritableDatabase();
+        db.delete(DatabaseContract.PodcastTable.PODCAST_TABLE,null,null);
 
         final int match = sUriMatcher.match(uri);
         Log.v(TAG, "match int " + match);

@@ -32,39 +32,14 @@ public class MainActivity extends AppCompatActivity {
 
         manager = new SessionManager(this);
 
+        Log.v(TAG, "token " + manager.getToken());
+        Log.v(TAG, "isLoggedin? " + manager.isLoggedIn());
+
         // if not logged in, start the login activity
         if (!manager.isLoggedIn()) {
             Intent intent = new Intent(this, LoginActivity2.class);
             startActivity(intent);
         }
-
-        
-//        TextView tokenView = (TextView) findViewById(R.id.token_view);
-//
-//        String token = manager.getToken();
-//
-//        tokenView.setText(token);
-//
-//        Button getPodcastButton = (Button) findViewById(R.id.get_podcast_button);
-//        getPodcastButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = new Intent(MainActivity.this, PodcastFetchService.class);
-//                startService(intent);
-//            }
-//        });
-//
-//        Button logoutButton = (Button) findViewById(R.id.logout_button);
-//        logoutButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                manager.logout();
-//            }
-//        });
-//
-//        Log.v(TAG, "token " + token);
-
     }
 
     @Override

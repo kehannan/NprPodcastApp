@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +25,9 @@ public class PodcastSummaryFragment extends Fragment
     private static final String TAG = "PodcastSummaryFragment";
 
     public static final int PODCAST_LOADER = 0;
-    PodcastAdapter adapter;
+    //PodcastAdapter adapter;
+    PodcastRecyclerAdapter podcastRecyclerAdapter;
+    RecyclerView recyclerView;
 
     public PodcastSummaryFragment() {
     }
@@ -33,10 +37,19 @@ public class PodcastSummaryFragment extends Fragment
 
         updatePodcasts();
         View rootView = inflater.inflate(R.layout.fragment_podcast_summary, container, false);
-        ListView podcasts_list = (ListView) rootView.findViewById(R.id.podcast_list);
+        //ListView podcasts_list = (ListView) rootView.findViewById(R.id.podcast_list);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_podcasts);
 
-        adapter = new PodcastAdapter(getActivity(), null, 0);
-        podcasts_list.setAdapter(adapter);
+        //Set layout manager?
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+
+        //adapter = new PodcastAdapter(getActivity(), null, 0);
+        //podcasts_list.setAdapter(adapter);
+
+        podcastRecyclerAdapter = new PodcastRecyclerAdapter(getActivity());
+
+        recyclerView.setAdapter(podcastRecyclerAdapter);
 
         // loader
         getLoaderManager().initLoader(PODCAST_LOADER, null, this);
@@ -68,13 +81,15 @@ public class PodcastSummaryFragment extends Fragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         Log.v(TAG, "onloadFinished()");
-        adapter.swapCursor(data);
+        //adapter.swapCursor(data);
+        podcastRecyclerAdapter.swapCursor(data);
 
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        adapter.swapCursor(null);
+        //adapter.swapCursor(null);
+        podcastRecyclerAdapter.swapCursor(null);
 
     }
 }

@@ -99,10 +99,9 @@ public class PodcastFetchService extends IntentService{
             podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF, podcastItem.getLinks().getImage().
                     get(0).getHref());
         } else {
-            podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF,"");
+            podcast_values.putNull(DatabaseContract.PodcastTable.IMAGE_HREF);
             Log.v(TAG, "image href empty");
         }
         return podcast_values;
-
     }
 }

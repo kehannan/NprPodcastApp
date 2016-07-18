@@ -76,6 +76,12 @@ public class LoginActivity2 extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // hack
+        if(manager.isLoggedIn()) {
+            Intent intent = new Intent(LoginActivity2.this, MainActivity.class);
+            startActivity(intent);
+        }
+
         // the intent filter defined in AndroidManifest will handle the return from ACTION_VIEW intent
         Uri uri = getIntent().getData();
         if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {

@@ -29,9 +29,9 @@ public class PodcastDbHelper extends SQLiteOpenHelper{
         final String SqlCreateScoresTable = "CREATE TABLE "
                 + PodcastTable.PODCAST_TABLE
                 + " (" + PodcastTable._ID + " INTEGER PRIMARY KEY, "
-                + PodcastTable.TITLE + " TEXT NOT NULL, "
-                + PodcastTable.AUDIO_HREF + " TEXT NOT NULL, "
-                + PodcastTable.IMAGE_HREF + " TEXT NOT NULL "
+                + PodcastTable.TITLE + " TEXT, "
+                + PodcastTable.AUDIO_HREF + " TEXT, "
+                + PodcastTable.IMAGE_HREF + " TEXT "
                 + " );";
 
         Log.v(TAG, "SQL " + SqlCreateScoresTable);
