@@ -26,11 +26,21 @@ public class PodcastRecyclerAdapter
     public static final int COL_TITLE = 1;
     public static final int COL_IMAGE = 3;
 
-    public PodcastRecyclerAdapter(Context context) {
+    // to hold reference to containing fragment
+    public PodcastRecyclerAdapterOnClickHandler mClickHandler;
+
+    public PodcastRecyclerAdapter(Context context, PodcastRecyclerAdapterOnClickHandler vh) {
         this.context = context;
+        mClickHandler = vh;
     }
 
-    public class PodcastAdapterViewHolder extends RecyclerView.ViewHolder {
+    // interface to pass click back to containing Fragment
+    public static interface PodcastRecyclerAdapterOnClickHandler {
+        public void onClick(int position);
+    }
+
+    // Custom view holder to hold podcast items
+    public class PodcastAdapterViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public ImageView ivIcon;
         public TextView tvTitle;
@@ -40,6 +50,16 @@ public class PodcastRecyclerAdapter
 
             ivIcon = (ImageView) view.findViewById(R.id.podcast_image);
             tvTitle = (TextView) view.findViewById(R.id.podcast_title);
+
+            // Setting click listener on the view
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int adapterPosition = getAdapterPosition();
+            mCursor.moveToPosition(adapterPosition);
+            mClickHandler.onClick(adapterPosition);
         }
     }
 
@@ -68,7 +88,6 @@ public class PodcastRecyclerAdapter
                     .fit()
                     .into(podcastAdapterViewHolder.ivIcon);
         }
-
         podcastAdapterViewHolder.tvTitle.setText(mCursor.getString(COL_TITLE));
     }
 
@@ -87,6 +106,5 @@ public class PodcastRecyclerAdapter
     public Cursor getCursor() {
         return mCursor;
     }
-
 
 }

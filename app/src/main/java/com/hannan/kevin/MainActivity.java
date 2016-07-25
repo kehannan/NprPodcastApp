@@ -2,22 +2,17 @@ package com.hannan.kevin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 
-import com.hannan.kevin.api.PodcastFetchService;
 import com.hannan.kevin.login.LoginActivity2;
 import com.hannan.kevin.login.SessionManager;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+    implements PodcastSummaryFragment.Callback {
 
     private static final String TAG = "MainActivity";
 
@@ -62,5 +57,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    // implements interface method to get data from PodcastSummaryFragment
+    @Override
+    public void onItemSelected(int position) {
+        Log.v(TAG, "onItemSelected " + position);
+
+        Intent i = new Intent(this, DetailActivity.class);
+        i.putExtra(PodcastSummaryFragment.PODCAST_ID, position);
+        startActivity(i);
     }
 }

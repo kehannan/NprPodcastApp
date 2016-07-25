@@ -1,5 +1,6 @@
 package com.hannan.kevin;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -13,21 +14,31 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.hannan.kevin.api.PodcastFetchService;
 import com.hannan.kevin.provider.DatabaseContract;
 
 
 public class PodcastSummaryFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor> {
+        implements LoaderManager.LoaderCallbacks<Cursor>, PodcastRecyclerAdapter.PodcastRecyclerAdapterOnClickHandler {
 
     private static final String TAG = "PodcastSummaryFragment";
 
+    public final static String PODCAST_ID = "com.hannan.kevin.podcastsummaryfragment.podcastid";
     public static final int PODCAST_LOADER = 0;
-    //PodcastAdapter adapter;
+
     PodcastRecyclerAdapter podcastRecyclerAdapter;
     RecyclerView recyclerView;
+    Callback callback;
+
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
+    public interface Callback {
+        public void onItemSelected(int position);
+    }
 
     public PodcastSummaryFragment() {
     }
@@ -37,17 +48,13 @@ public class PodcastSummaryFragment extends Fragment
 
         updatePodcasts();
         View rootView = inflater.inflate(R.layout.fragment_podcast_summary, container, false);
-        //ListView podcasts_list = (ListView) rootView.findViewById(R.id.podcast_list);
+
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_podcasts);
 
         //Set layout manager?
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
-        //adapter = new PodcastAdapter(getActivity(), null, 0);
-        //podcasts_list.setAdapter(adapter);
-
-        podcastRecyclerAdapter = new PodcastRecyclerAdapter(getActivity());
+        podcastRecyclerAdapter = new PodcastRecyclerAdapter(getActivity(), this);
 
         recyclerView.setAdapter(podcastRecyclerAdapter);
 
@@ -55,6 +62,23 @@ public class PodcastSummaryFragment extends Fragment
         getLoaderManager().initLoader(PODCAST_LOADER, null, this);
 
         return rootView;
+
+    }
+
+    // On attaching, create reference to containing activity
+    // through Callback interface
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        callback = (Callback)activity;
+    }
+
+    // To handle the click on a view holder, defined in
+    // interface in PodcastRecyclerAdapter. Takes data from
+    // the adapter and passing to the containing activity
+    @Override
+    public void onClick(int position) {
+        callback.onItemSelected(position);
 
     }
 
