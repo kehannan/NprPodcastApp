@@ -1,13 +1,14 @@
 package com.hannan.kevin;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.hannan.kevin.login.LoginActivity2;
+import com.hannan.kevin.login.LoginActivity;
 import com.hannan.kevin.login.SessionManager;
 
 
@@ -32,7 +33,7 @@ public class MainActivity extends AppCompatActivity
 
         // if not logged in, start the login activity
         if (!manager.isLoggedIn()) {
-            Intent intent = new Intent(this, LoginActivity2.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         }
     }
@@ -61,11 +62,11 @@ public class MainActivity extends AppCompatActivity
 
     // implements interface method to get data from PodcastSummaryFragment
     @Override
-    public void onItemSelected(int position) {
-        Log.v(TAG, "onItemSelected " + position);
+    public void onItemSelected(Uri uri) {
+        Log.v(TAG, "onItemSelected " + uri);
 
         Intent i = new Intent(this, DetailActivity.class);
-        i.putExtra(PodcastSummaryFragment.PODCAST_ID, position);
+        i.putExtra(PodcastSummaryFragment.PODCAST_ID, uri.toString());
         startActivity(i);
     }
 }

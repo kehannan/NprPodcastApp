@@ -2,7 +2,6 @@ package com.hannan.kevin;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,10 +21,10 @@ public class DetailActivity extends ActionBarActivity {
 
         // get the podcast id passed from the summary fragment
         // put it in the args to pass to the detailed fragment
-        args.putInt(PodcastSummaryFragment.PODCAST_ID,
-                getIntent().getExtras().getInt(PodcastSummaryFragment.PODCAST_ID));
+        args.putString(PodcastSummaryFragment.PODCAST_ID,
+                getIntent().getExtras().getString(PodcastSummaryFragment.PODCAST_ID));
 
-        Log.v(TAG, "podcast id " + getIntent().getExtras().getInt(PodcastSummaryFragment.PODCAST_ID));
+        //Log.v(TAG, "podcast id " + getIntent().getExtras().getInt(PodcastSummaryFragment.PODCAST_ID));
         PodcastDetailFragment fragment = new PodcastDetailFragment();
         fragment.setArguments(args);
 

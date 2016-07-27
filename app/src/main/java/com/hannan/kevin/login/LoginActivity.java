@@ -3,8 +3,6 @@ package com.hannan.kevin.login;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -22,7 +20,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LoginActivity2 extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
 
     public static String OAUTH_URL = "https://api.npr.org/authorization/v2/authorize";
@@ -42,7 +40,7 @@ public class LoginActivity2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -78,7 +76,7 @@ public class LoginActivity2 extends AppCompatActivity {
 
         // hack
         if(manager.isLoggedIn()) {
-            Intent intent = new Intent(LoginActivity2.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
         }
 
@@ -116,7 +114,7 @@ public class LoginActivity2 extends AppCompatActivity {
 
                             Log.v(TAG, "token=" + token);
 
-                            Intent intent = new Intent(LoginActivity2.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
 
                         }

@@ -20,10 +20,17 @@ public class PodcastProvider extends ContentProvider {
 
     private static final String TAG = "PodcastProvider";
 
+    // URIMatcher constants
     static final int PODCASTS = 100;
+    static final int INDIVIDUAL_PODCAST = 101;
 
     // Creates a UriMatcher object.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
+
+    // Selections
+    private static final String sPodcastSelection =
+            DatabaseContract.PodcastTable.PODCAST_TABLE +
+                    "." + DatabaseContract.PodcastTable._ID + " = ? ";
 
     static UriMatcher buildUriMatcher() {
 
@@ -31,6 +38,7 @@ public class PodcastProvider extends ContentProvider {
         final String authority = DatabaseContract.CONTENT_AUTHORITY; // com.hannan.kevin.provider
 
         matcher.addURI(authority, DatabaseContract.PODCASTS, PODCASTS); //authority, podcasts, 100
+        matcher.addURI(authority, DatabaseContract.PODCASTS + "/#", INDIVIDUAL_PODCAST);
 
         Log.v(TAG, "authority (in build matcher) " + authority);
         Log.v(TAG, "path " + DatabaseContract.PODCASTS);

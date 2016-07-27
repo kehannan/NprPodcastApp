@@ -29,4 +29,10 @@ public class DatabaseContract {
         }
 
     }
+
+    public static Uri buildIndividualPodcast(
+           int id) {
+        return BASE_CONTENT_URI.buildUpon().appendPath(PODCASTS)
+                .appendQueryParameter(PodcastTable._ID, Integer.toString(id)).build();
+    }
 }

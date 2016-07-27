@@ -2,6 +2,7 @@ package com.hannan.kevin;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hannan.kevin.provider.DatabaseContract;
 import com.squareup.picasso.Picasso;
 
 
@@ -23,6 +25,7 @@ public class PodcastRecyclerAdapter
 
     private Cursor mCursor;
     private Context context;
+    public static final int COL_ID = 0;
     public static final int COL_TITLE = 1;
     public static final int COL_IMAGE = 3;
 
@@ -36,7 +39,7 @@ public class PodcastRecyclerAdapter
 
     // interface to pass click back to containing Fragment
     public static interface PodcastRecyclerAdapterOnClickHandler {
-        public void onClick(int position);
+        public void onClick(Uri uri);
     }
 
     // Custom view holder to hold podcast items
@@ -59,7 +62,10 @@ public class PodcastRecyclerAdapter
         public void onClick(View v) {
             int adapterPosition = getAdapterPosition();
             mCursor.moveToPosition(adapterPosition);
-            mClickHandler.onClick(adapterPosition);
+
+            // get podcast ID ans send to fragment
+            Log.v(TAG, DatabaseContract.buildIndividualPodcast(mCursor.getInt(COL_ID)).toString());
+            mClickHandler.onClick(DatabaseContract.buildIndividualPodcast(mCursor.getInt(COL_ID)));
         }
     }
 

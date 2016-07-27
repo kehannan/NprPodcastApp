@@ -3,6 +3,7 @@ package com.hannan.kevin;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -37,7 +38,7 @@ public class PodcastSummaryFragment extends Fragment
      * selections.
      */
     public interface Callback {
-        public void onItemSelected(int position);
+        public void onItemSelected(Uri uri);
     }
 
     public PodcastSummaryFragment() {
@@ -77,8 +78,8 @@ public class PodcastSummaryFragment extends Fragment
     // interface in PodcastRecyclerAdapter. Takes data from
     // the adapter and passing to the containing activity
     @Override
-    public void onClick(int position) {
-        callback.onItemSelected(position);
+    public void onClick(Uri uri) {
+        callback.onItemSelected(uri);
 
     }
 
@@ -105,7 +106,6 @@ public class PodcastSummaryFragment extends Fragment
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
 
         Log.v(TAG, "onloadFinished()");
-        //adapter.swapCursor(data);
         podcastRecyclerAdapter.swapCursor(data);
 
     }
