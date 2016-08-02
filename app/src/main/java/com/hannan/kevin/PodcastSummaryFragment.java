@@ -58,6 +58,7 @@ public class PodcastSummaryFragment extends Fragment
         podcastRecyclerAdapter = new PodcastRecyclerAdapter(getActivity(), this);
 
         recyclerView.setAdapter(podcastRecyclerAdapter);
+        recyclerView.addItemDecoration(new PodcastRecyclerAdapter.SimpleDividerItemDecoration(getActivity()));
 
         // loader
         getLoaderManager().initLoader(PODCAST_LOADER, null, this);

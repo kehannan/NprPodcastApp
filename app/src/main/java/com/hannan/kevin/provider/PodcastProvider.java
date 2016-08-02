@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -27,12 +28,16 @@ public class PodcastProvider extends ContentProvider {
     // Creates a UriMatcher object.
     private static final UriMatcher sUriMatcher = buildUriMatcher();
 
+    private static SQLiteQueryBuilder sQueryBuilder;
+
     // Selections
     private static final String sPodcastSelection =
             DatabaseContract.PodcastTable.PODCAST_TABLE +
                     "." + DatabaseContract.PodcastTable._ID + " = ? ";
 
     static UriMatcher buildUriMatcher() {
+
+        sQueryBuilder = new SQLiteQueryBuilder();
 
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = DatabaseContract.CONTENT_AUTHORITY; // com.hannan.kevin.provider
@@ -43,6 +48,30 @@ public class PodcastProvider extends ContentProvider {
         Log.v(TAG, "authority (in build matcher) " + authority);
         Log.v(TAG, "path " + DatabaseContract.PODCASTS);
         return matcher;
+    }
+
+    private Cursor getIndividualPodcast(Uri uri) {
+        int id = DatabaseContract.getIdFromUri(uri);
+
+        return sPodcastDbHelper.getReadableDatabase().query(
+                DatabaseContract.PodcastTable.PODCAST_TABLE,
+                null,
+                sPodcastSelection,
+                new String[] {String.valueOf(id)},
+                null,
+                null,
+                null
+        );
+
+//        return sQueryBuilder.query(sPodcastDbHelper.getReadableDatabase(),
+//                DatabaseContract.PodcastTable.PODCAST_TABLE,
+//                null,                               // projection
+//                sPodcastSelection,                  // where clause
+//                new String[] {String.valueOf(id)},  // where arguments
+//                null,
+//                null,
+//                null
+//        );
     }
 
     @Override
@@ -65,6 +94,10 @@ public class PodcastProvider extends ContentProvider {
                 retCursor = sPodcastDbHelper.getReadableDatabase().query(
                         DatabaseContract.PodcastTable.PODCAST_TABLE,
                         null,null,null,null,null,null);
+                return retCursor;
+
+            case INDIVIDUAL_PODCAST:
+                retCursor = getIndividualPodcast(uri);
                 return retCursor;
 
             default:

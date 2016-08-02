@@ -19,6 +19,7 @@ import retrofit2.Response;
 public class PodcastFetchService extends IntentService{
 
     private static final String TAG = "PodcastFetchService";
+    private static final String CHANNEL_SHOWS = "shows";
 
     SessionManager manager;
 
@@ -40,7 +41,7 @@ public class PodcastFetchService extends IntentService{
 
         LoginService client = ServiceGenerator.createService(LoginService.class);
 
-        Call<ItemsList> call = client.getRecommendations(token);
+        Call<ItemsList> call = client.getRecommendations(token, CHANNEL_SHOWS);
 
         call.enqueue(new Callback<ItemsList>() {
 
@@ -102,6 +103,16 @@ public class PodcastFetchService extends IntentService{
             podcast_values.putNull(DatabaseContract.PodcastTable.IMAGE_HREF);
             Log.v(TAG, "image href empty");
         }
+
+        //insert program
+        podcast_values.put(DatabaseContract.PodcastTable.PROGRAM,
+                podcastItem.getAttributes().getProgram());
+
+        podcast_values.put(DatabaseContract.PodcastTable.DURATION,
+                podcastItem.getAttributes().getDuration());
+
+        Log.v(TAG, "prog " +  podcastItem.getAttributes().getProgram());
+
         return podcast_values;
     }
 }

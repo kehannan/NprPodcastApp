@@ -10,6 +10,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Created by kehannan on 6/6/16.
@@ -27,5 +28,6 @@ public interface LoginService {
 
     @GET("/listening/v2/recommendations")
     Call<ItemsList> getRecommendations(
-            @Header("Authorization") String token);
+            @Header("Authorization") String token,
+            @Query("channel") String channel);
 }
