@@ -6,15 +6,27 @@ import android.app.LoaderManager;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.res.ResourcesCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 public class PodcastDetailFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, MediaPlayer.OnCompletionListener {
@@ -28,11 +40,23 @@ public class PodcastDetailFragment extends Fragment
 
     private ImageButton play_pause;
     private ImageButton forward30;
+    private ImageButton back30;
     private ImageButton pause;
     private ImageButton stop;
     private MediaPlayer mp;
 
     private Uri audioHref;
+    private Uri imageHref;
+
+    private ImageView mPhotoView;
+    private TextView mProgramView;
+    private TextView mTitleView;
+    private TextView mDescriptionView;
+    private TextView mDateView;
+    private TextView mDurationView;
+
+    CollapsingToolbarLayout toolbarLayout;
+
 
     public PodcastDetailFragment() {
 
@@ -50,17 +74,25 @@ public class PodcastDetailFragment extends Fragment
 
         View rootView = inflater.inflate(R.layout.fragment_podcast_detail, container, false);
 
-        //TextView podcast_id_tv = (TextView)rootView.findViewById(R.id.podcast_id);
-        //podcast_title_tv = (TextView)rootView.findViewById(R.id.podcast_title);
-        //podcast_id_tv.setText(mUri.toString());
 
         // loader
         getLoaderManager().initLoader(PODCAST_DETAIL_LOADER, null, this);
 
-        play_pause=(ImageButton)rootView.findViewById(R.id.play_pause_button);
+        mPhotoView = (ImageView) rootView.findViewById(R.id.photo);
+        mProgramView = (TextView) rootView.findViewById(R.id.program);
+        mTitleView = (TextView) rootView.findViewById(R.id.title);
+        mDescriptionView = (TextView) rootView.findViewById(R.id.description);
+        mDateView = (TextView) rootView.findViewById(R.id.podcast_date);
+        mDurationView = (TextView) rootView.findViewById(R.id.duration);
+
+        play_pause = (ImageButton)rootView.findViewById(R.id.play_pause_button);
         forward30 = (ImageButton)rootView.findViewById(R.id.forward_30);
+        back30 = (ImageButton)rootView.findViewById(R.id.back_30);
 
-
+        // set color of buttons
+        play_pause.setColorFilter(ContextCompat.getColor(getActivity(), R.color.DarkGrey));
+        forward30.setColorFilter(ContextCompat.getColor(getActivity(), R.color.DarkGrey));
+        back30.setColorFilter(ContextCompat.getColor(getActivity(), R.color.DarkGrey));
 
         play_pause.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -80,6 +112,17 @@ public class PodcastDetailFragment extends Fragment
                 forward30();
             }
         });
+
+        toolbarLayout = (CollapsingToolbarLayout) rootView
+                .findViewById(R.id.collapsing_toolbar_layout);
+
+        // Implementing up arrow
+        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        mActionBar.setDisplayHomeAsUpEnabled(true);
+        mActionBar.setDisplayShowTitleEnabled(false);
 
         return rootView;
     }
@@ -167,11 +210,20 @@ public class PodcastDetailFragment extends Fragment
 
         data.moveToFirst();
 
-        String title = data.getString(1);
-//        podcast_title_tv.setText(title);
+        mProgramView.setText(data.getString(4));
+        mTitleView.setText(data.getString(1));
+        mDescriptionView.setText(data.getString(7));
+        mDateView.setText(data.getString(6));
+        mDurationView.setText(data.getString(5));
 
-        Log.v(TAG, data.getString(2));
         audioHref = Uri.parse(data.getString(2));
+
+        String imageHref = data.getString(3);
+        if (imageHref != null) {
+            Picasso.with(getActivity()).load(imageHref)
+                    .fit()
+                    .into(mPhotoView);
+        }
         setup();
     }
 

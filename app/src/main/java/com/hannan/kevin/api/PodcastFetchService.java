@@ -94,7 +94,6 @@ public class PodcastFetchService extends IntentService{
                 get(0).getHref());
 
         //insert image href
-
         if (podcastItem.getLinks().getImage().size() != 0) {
             Log.v(TAG, "image href " + podcastItem.getLinks().getImage().get(0).getHref());
             podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF, podcastItem.getLinks().getImage().
@@ -108,8 +107,17 @@ public class PodcastFetchService extends IntentService{
         podcast_values.put(DatabaseContract.PodcastTable.PROGRAM,
                 podcastItem.getAttributes().getProgram());
 
+        //insert description
+        podcast_values.put(DatabaseContract.PodcastTable.DESCRIPTION,
+                podcastItem.getAttributes().getDescription());
+
+        //insert duration
         podcast_values.put(DatabaseContract.PodcastTable.DURATION,
                 podcastItem.getAttributes().getDuration());
+
+        //insert date
+        podcast_values.put(DatabaseContract.PodcastTable.PROG_DATE,
+                podcastItem.getAttributes().getDate());
 
         Log.v(TAG, "prog " +  podcastItem.getAttributes().getProgram());
 
