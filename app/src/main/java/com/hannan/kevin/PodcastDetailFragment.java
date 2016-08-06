@@ -113,16 +113,16 @@ public class PodcastDetailFragment extends Fragment
             }
         });
 
-        toolbarLayout = (CollapsingToolbarLayout) rootView
-                .findViewById(R.id.collapsing_toolbar_layout);
-
-        // Implementing up arrow
-        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-
-        ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-        mActionBar.setDisplayHomeAsUpEnabled(true);
-        mActionBar.setDisplayShowTitleEnabled(false);
+//        toolbarLayout = (CollapsingToolbarLayout) rootView
+//                .findViewById(R.id.collapsing_toolbar_layout);
+//
+//        // Implementing up arrow
+//        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+//
+//        ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+//        mActionBar.setDisplayHomeAsUpEnabled(true);
+//        mActionBar.setDisplayShowTitleEnabled(false);
 
         return rootView;
     }
