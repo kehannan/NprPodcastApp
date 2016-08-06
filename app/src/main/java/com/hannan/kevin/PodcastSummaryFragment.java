@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -65,8 +66,18 @@ public class PodcastSummaryFragment extends Fragment
         // loader
         getLoaderManager().initLoader(PODCAST_LOADER, null, this);
 
-        toolbarLayout = (CollapsingToolbarLayout) rootView
-                .findViewById(R.id.collapsing_toolbar_layout);
+        CoordinatorLayout coordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.coordinator_layout);
+
+        CollapsingToolbarLayout collapsingToolbar =
+                (CollapsingToolbarLayout) rootView.findViewById(R.id.collapsing_toolbar_layout);
+
+        collapsingToolbar.setTitle("Podcast Player");
+
+        // approach from Stack Overflow:
+        // http://stackoverflow.com/questions/31738831/how-to-change-collapsingtoolbarlayout-typeface-and-size
+        collapsingToolbar.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
+        collapsingToolbar.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+
 
         return rootView;
 

@@ -31,6 +31,7 @@ public class DatabaseContract {
         public static final String DURATION = "duration";
         public static final String PROG_DATE = "date";
         public static final String DESCRIPTION = "description";
+        public static final String BRICK_HREF = "brick_href";
 
         public static Uri allPodcasts() {
             return BASE_CONTENT_URI.buildUpon().appendPath(PODCASTS).build();

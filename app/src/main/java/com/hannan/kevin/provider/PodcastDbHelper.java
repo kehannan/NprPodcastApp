@@ -35,7 +35,8 @@ public class PodcastDbHelper extends SQLiteOpenHelper{
                 + PodcastTable.PROGRAM + " TEXT, "
                 + PodcastTable.DURATION + " TEXT, "
                 + PodcastTable.PROG_DATE + " TEXT, "
-                + PodcastTable.DESCRIPTION + " TEXT "
+                + PodcastTable.DESCRIPTION + " TEXT, "
+                + PodcastTable.BRICK_HREF + " TEXT "
                 + " );";
 
         Log.v(TAG, "SQL " + SqlCreateScoresTable);

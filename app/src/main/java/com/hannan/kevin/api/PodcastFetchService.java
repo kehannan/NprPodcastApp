@@ -5,6 +5,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
 import com.hannan.kevin.login.SessionManager;
+import com.hannan.kevin.model.Image;
 import com.hannan.kevin.model.ItemsList;
 import com.hannan.kevin.model.PodcastItem;
 import com.hannan.kevin.provider.DatabaseContract;
@@ -93,11 +94,26 @@ public class PodcastFetchService extends IntentService{
         podcast_values.put(DatabaseContract.PodcastTable.AUDIO_HREF, podcastItem.getLinks().getAudio().
                 get(0).getHref());
 
-        //insert image href
+        //insert image hrefs
         if (podcastItem.getLinks().getImage().size() != 0) {
-            Log.v(TAG, "image href " + podcastItem.getLinks().getImage().get(0).getHref());
-            podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF, podcastItem.getLinks().getImage().
-                    get(0).getHref());
+
+            podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF,
+                    podcastItem.getLinks().getImage().get(0).getHref());
+
+//            ArrayList<Image> imageList = (ArrayList<Image>) podcastItem.getLinks().getImage();
+//
+//            for (Image image : imageList) {
+//
+//                String rel = image.getRel();
+//
+//                if (rel.equals("square")) {
+//                    podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF, image.getHref());
+//                }
+//
+//                if (rel.equals("brick")) {
+//                    podcast_values.put(DatabaseContract.PodcastTable.BRICK_HREF, image.getHref());
+//                }
+//            }
         } else {
             podcast_values.putNull(DatabaseContract.PodcastTable.IMAGE_HREF);
             Log.v(TAG, "image href empty");

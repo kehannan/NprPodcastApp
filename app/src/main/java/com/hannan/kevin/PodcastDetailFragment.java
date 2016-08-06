@@ -3,15 +3,15 @@ package com.hannan.kevin;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.LoaderManager;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Loader;
 import android.database.Cursor;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ScaleDrawable;
+
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.res.ResourcesCompat;
@@ -24,30 +24,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.MediaController;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
 public class PodcastDetailFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, MediaPlayer.OnCompletionListener {
+        implements LoaderManager.LoaderCallbacks<Cursor>, MediaPlayer.OnCompletionListener,
+        SeekBar.OnSeekBarChangeListener {
 
     private static final String TAG = "PodcastDetailFragment";
-    private Uri mUri;
-    private static final int PODCAST_DETAIL_LOADER = 0;
-    private static int THIRTY_SECONDS = 30 * 1000; // in milliseconds
 
-    TextView podcast_title_tv;
-
-    private ImageButton play_pause;
-    private ImageButton forward30;
-    private ImageButton back30;
-    private ImageButton pause;
-    private ImageButton stop;
-    private MediaPlayer mp;
-
-    private Uri audioHref;
-    private Uri imageHref;
-
+    // UI elements
     private ImageView mPhotoView;
     private TextView mProgramView;
     private TextView mTitleView;
@@ -55,25 +44,34 @@ public class PodcastDetailFragment extends Fragment
     private TextView mDateView;
     private TextView mDurationView;
 
-    CollapsingToolbarLayout toolbarLayout;
+    private SeekBar songProgressBar;
+    private ImageButton play_pause;
+    private ImageButton forward30;
+    private ImageButton back30;
 
+    // Handler to update UI timer, progress bar etc,.
+    private Handler mHandler = new Handler();
+
+    private Util utils;
+    private Uri mUri;
+    private static final int PODCAST_DETAIL_LOADER = 0;
+    private static int THIRTY_SECONDS = 30 * 1000; // in milliseconds
+    private MediaPlayer mp;
+    private Uri audioHref;
 
     public PodcastDetailFragment() {
-
     }
 
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        // Retrieve bundle .
+        // Retrieve bundle.
         Bundle args = getArguments();
 
         mUri = Uri.parse(args.getString(PodcastSummaryFragment.PODCAST_ID));
 
-        Log.v(TAG, "podcast id " + mUri.toString());
-
         View rootView = inflater.inflate(R.layout.fragment_podcast_detail, container, false);
-
 
         // loader
         getLoaderManager().initLoader(PODCAST_DETAIL_LOADER, null, this);
@@ -85,9 +83,12 @@ public class PodcastDetailFragment extends Fragment
         mDateView = (TextView) rootView.findViewById(R.id.podcast_date);
         mDurationView = (TextView) rootView.findViewById(R.id.duration);
 
+        songProgressBar = (SeekBar)rootView.findViewById(R.id.songProgressBar);
         play_pause = (ImageButton)rootView.findViewById(R.id.play_pause_button);
         forward30 = (ImageButton)rootView.findViewById(R.id.forward_30);
         back30 = (ImageButton)rootView.findViewById(R.id.back_30);
+
+        utils = new Util();
 
         // set color of buttons
         play_pause.setColorFilter(ContextCompat.getColor(getActivity(), R.color.DarkGrey));
@@ -96,7 +97,6 @@ public class PodcastDetailFragment extends Fragment
 
         play_pause.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-
                 if (mp.isPlaying()){
                     pause();
                     play_pause.setImageResource(R.drawable.ic_pause);
@@ -113,61 +113,117 @@ public class PodcastDetailFragment extends Fragment
             }
         });
 
-//        toolbarLayout = (CollapsingToolbarLayout) rootView
-//                .findViewById(R.id.collapsing_toolbar_layout);
-//
-//        // Implementing up arrow
-//        Toolbar toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-//        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
-//
-//        ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
-//        mActionBar.setDisplayHomeAsUpEnabled(true);
-//        mActionBar.setDisplayShowTitleEnabled(false);
+        back30.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                back30();
+            }
+        });
+
+        songProgressBar.setOnSeekBarChangeListener(this);
 
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mp.stop();
     }
 
     private void play() {
         mp.start();
 
-        int currentPosition = mp.getCurrentPosition();
-        int duration = mp.getDuration();
+        // set Progress bar values
+        songProgressBar.setProgress(0);
+        songProgressBar.setMax(100);
 
-        Log.v(TAG, "current position" + currentPosition);
-        Log.v(TAG, "duration" + duration);
-        play_pause.setEnabled(true);
+        // Updating progress bar
+        updateProgressBar();
+    }
+
+    public void updateProgressBar() {
+        mHandler.postDelayed(mUpdateTimeTask, 100);
+    }
+
+    /**
+     * Background Runnable thread
+     * */
+    private Runnable mUpdateTimeTask = new Runnable() {
+        public void run() {
+            long totalDuration = mp.getDuration();
+            long currentDuration = mp.getCurrentPosition();
+
+            // Updating progress bar
+            int progress = (int)(utils.getProgressPercentage(currentDuration, totalDuration));
+            //Log.d("Progress", ""+progress);
+            songProgressBar.setProgress(progress);
+
+            // Running this thread after 100 milliseconds
+            mHandler.postDelayed(this, 100);
+        }
+    };
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromTouch) {
+    }
+
+    /**
+     * When user starts moving the progress handler
+     * */
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        // remove message Handler from updating progress bar
+        mHandler.removeCallbacks(mUpdateTimeTask);
+    }
+
+    /**
+     * When user stops moving the progress handler
+     * */
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        mHandler.removeCallbacks(mUpdateTimeTask);
+        int totalDuration = mp.getDuration();
+        int currentPosition = utils.progressToTimer(seekBar.getProgress(), totalDuration);
+
+        // forward or backward to certain seconds
+        mp.seekTo(currentPosition);
+
+        // update timer progress again
+        updateProgressBar();
     }
 
     private void forward30() {
-        Log.v(TAG, "forward30");
         int currentPosition = mp.getCurrentPosition();
         mp.seekTo(currentPosition + THIRTY_SECONDS);
     }
 
-    private void stop() {
-
-       mp.stop();
-//        stop.setEnabled(false);
-//
-//        try {
-//            mp.prepare();
-//            mp.seekTo(0);
-//            play_pause.setEnabled(true);
-//        }
-//        catch (Throwable t) {
-//            goBlooey(t);
-//        }
+    private void back30() {
+        int currentPosition = mp.getCurrentPosition();
+        mp.seekTo(currentPosition - THIRTY_SECONDS);
     }
 
     private void pause() {
         mp.pause();
+    }
 
+    private void stop() {
+        mp.stop();
+
+        try {
+            mp.prepare();
+            mp.seekTo(0);
+            play_pause.setEnabled(true);
+        }
+        catch (Throwable t) {
+            goBlooey(t);
+        }
     }
 
     private void setup() {
         loadClip();
         play_pause.setEnabled(true);
         forward30.setEnabled(true);
+        back30.setEnabled(true);
     }
 
     private void loadClip() {
@@ -189,7 +245,6 @@ public class PodcastDetailFragment extends Fragment
                 .setPositiveButton("OK", null)
                 .show();
     }
-
 
     // Loader to get selected podcast
     @Override
