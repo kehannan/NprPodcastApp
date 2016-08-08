@@ -1,133 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/layout_body"
+    android:id="@+id/detail_frag"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginStart="16dp"
-    android:layout_marginEnd="16dp"
-    android:layout_marginTop="16dp">
+    android:layout_height="match_parent" >
 
-    <!-- Holds text content of podcast -->
-        <!-- Holds header image -->
-        <RelativeLayout
-            android:id="@+id/header_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:elevation="4dp"/>
 
-        <ImageView
-            android:id="@+id/photo"
-            android:layout_width="150dp"
-            android:layout_height="150dp" />
+    <ImageView
+        android:layout_marginTop="8dp"
+        android:id="@+id/photo"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center_horizontal" />
 
-        <TextView
-            android:id="@+id/program"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:textColor="@color/colorAccent"
-            android:textSize="16sp"
-            android:layout_toRightOf="@id/photo"
-            android:layout_centerVertical="true" />
-        </RelativeLayout>
-
-        <!--holds body text -->
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/header_image">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif"
-            android:textSize="16sp"
-            android:ellipsize="end"
-            android:maxLines="5"
-            android:layout_below="@id/title"/>
-
-        <TextView
-            android:id="@+id/podcast_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:layout_below="@id/description"/>
-
-        <TextView
-            android:id="@+id/duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif-medium"
-            android:textSize="16sp"
-            android:layout_below="@id/podcast_date"/>
-    </RelativeLayout>
-
-    <!--player bar -->
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="match_parent">
 
-        android:layout_alignParentBottom="true">
+    <!-- hold podcast text -->
+    <RelativeLayout
+        android:id="@+id/layout_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp">
 
-        <android.support.v7.widget.AppCompatSeekBar
-            android:id="@+id/songProgressBar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"/>
+            <TextView
+                android:id="@+id/program"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:layout_centerHorizontal="true" />
 
-        <!-- player buttons -->
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-medium"
+                android:textSize="24sp"
+                android:layout_below="@id/program"/>
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:ellipsize="end"
+                android:maxLines="5"
+                android:layout_below="@id/title"/>
+
+            <TextView
+                android:id="@+id/podcast_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:layout_below="@id/description"/>
+
+            <TextView
+                android:id="@+id/duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="sans-serif"
+                android:textSize="16sp"
+                android:layout_below="@id/podcast_date"/>
+    </RelativeLayout>
+
+        <!--player bar -->
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginEnd="48dp"
-            android:layout_marginTop="32dp">
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_alignParentBottom="true">
 
-            <ImageButton
-                android:id="@+id/back_30"
-                android:src="@drawable/ic_replay_30"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentStart="true"
-                android:scaleType="centerCrop"
-                android:background="@android:color/transparent" />
+            <android.support.v7.widget.AppCompatSeekBar
+                android:id="@+id/songProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"/>
 
-            <ImageButton android:id="@+id/play_pause_button"
-                android:src="@drawable/ic_play_arrow"
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:layout_centerHorizontal="true"
-                android:enabled="false"
-                android:scaleType="centerCrop"
-                android:background="@android:color/transparent"/>
+            <!-- player buttons -->
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="48dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginTop="32dp">
 
-            <ImageButton android:id="@+id/forward_30"
-                android:src="@drawable/ic_forward_30"
-                android:layout_height="50dp"
-                android:layout_width="50dp"
-                android:layout_alignParentEnd="true"
-                android:scaleType="centerCrop"
-                android:background="@android:color/transparent"/>
+
+
+                <ImageButton
+                    android:id="@+id/back_30"
+                    android:src="@drawable/ic_replay_30"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentStart="true"
+                    android:scaleType="centerCrop"
+                    android:background="@android:color/transparent" />
+
+                <ImageButton android:id="@+id/play_pause_button"
+                    android:src="@drawable/ic_play_arrow"
+                    android:layout_height="50dp"
+                    android:layout_width="50dp"
+                    android:layout_centerHorizontal="true"
+                    android:enabled="false"
+                    android:scaleType="centerCrop"
+                    android:background="@android:color/transparent"/>
+
+                <ImageButton android:id="@+id/forward_30"
+                    android:src="@drawable/ic_forward_30"
+                    android:layout_height="50dp"
+                    android:layout_width="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:scaleType="centerCrop"
+                    android:background="@android:color/transparent"/>
+            </RelativeLayout>
         </RelativeLayout>
-</RelativeLayout>
+    </RelativeLayout>
 
-</RelativeLayout>
+</LinearLayout>
 
 
 

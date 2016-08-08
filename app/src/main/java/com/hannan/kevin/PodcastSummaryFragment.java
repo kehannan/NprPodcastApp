@@ -62,6 +62,7 @@ public class PodcastSummaryFragment extends Fragment
 
         recyclerView.setAdapter(podcastRecyclerAdapter);
         recyclerView.addItemDecoration(new PodcastRecyclerAdapter.SimpleDividerItemDecoration(getActivity()));
+        recyclerView.setHasFixedSize(true);
 
         // loader
         getLoaderManager().initLoader(PODCAST_LOADER, null, this);
@@ -77,7 +78,6 @@ public class PodcastSummaryFragment extends Fragment
         // http://stackoverflow.com/questions/31738831/how-to-change-collapsingtoolbarlayout-typeface-and-size
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
-
 
         return rootView;
 
