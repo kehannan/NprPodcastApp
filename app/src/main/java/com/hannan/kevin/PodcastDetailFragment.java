@@ -11,6 +11,7 @@ import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,7 +38,7 @@ import java.util.Locale;
 
 public class PodcastDetailFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor>, MediaPlayer.OnCompletionListener,
-        SeekBar.OnSeekBarChangeListener {
+        SeekBar.OnSeekBarChangeListener, MediaPlayer.OnPreparedListener {
 
     private static final String TAG = "PodcastDetailFragment";
 
@@ -242,19 +243,27 @@ public class PodcastDetailFragment extends Fragment
 
     private void setup() {
         loadClip();
-        play_pause.setEnabled(true);
-        forward30.setEnabled(true);
-        back30.setEnabled(true);
     }
 
     private void loadClip() {
         try {
-            mp=MediaPlayer.create(getActivity(), audioHref);
-            mp.setOnCompletionListener(this);
+            mp = new MediaPlayer();
+
+            mp.setOnPreparedListener(this);
+            mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
+            mp.setDataSource(getActivity(), audioHref);
+            mp.prepareAsync(); // prepare async to not block main thread
+            //mp.setOnCompletionListener(this);
         }
         catch (Throwable t) {
             goBlooey(t);
         }
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer player) {
+        //mp.start();
+        mp.setOnCompletionListener(this);
     }
 
     private void goBlooey(Throwable t) {
