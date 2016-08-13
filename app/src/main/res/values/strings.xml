@@ -10,4 +10,9 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_podcast_detail_fragment">PodcastDetailFragment</string>
+
+
+    <string name="dialog_title">Login to Npr</string>
+    <string name="dialog_body">To use the podcast app you must first login through the Npr website.</string>
+    <string name="dialog_ok">OK</string>
 </resources>

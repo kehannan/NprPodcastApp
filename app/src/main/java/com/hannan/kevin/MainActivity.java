@@ -3,6 +3,10 @@ package com.hannan.kevin;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -12,12 +16,13 @@ import com.hannan.kevin.login.LoginActivity;
 import com.hannan.kevin.login.SessionManager;
 
 
+
 public class MainActivity extends AppCompatActivity
     implements PodcastSummaryFragment.Callback {
 
     private static final String TAG = "MainActivity";
-
     SessionManager manager;
+    LoginDialog loginDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +38,12 @@ public class MainActivity extends AppCompatActivity
 
         // if not logged in, start the login activity
         if (!manager.isLoggedIn()) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
+
+            loginDialog = new LoginDialog();
+            loginDialog.show(getSupportFragmentManager(), "dialog");
+
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
         }
     }
 
