@@ -3,22 +3,38 @@ package com.hannan.kevin;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.hannan.kevin.login.LoginActivity;
+import com.hannan.kevin.api.LoginService;
+import com.hannan.kevin.api.ServiceGenerator;
 import com.hannan.kevin.login.SessionManager;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MainActivity extends AppCompatActivity
-    implements PodcastSummaryFragment.Callback {
+    implements PodcastSummaryFragment.Callback, LoginDialog.LoginDialogListener {
+
+    public static String OAUTH_URL = "https://api.npr.org/authorization/v2/authorize";
+
+    public static String CLIENT_ID = "nprone_trial_NFUsXLna6ZQu";
+    public static String CLIENT_SECRET = BuildConfig.NPR_SECRET_KEY;
+
+    public static String CALLBACK_URL = "myapp://callback";
+
+    private static String SCOPE = "identity.readonly identity.write " +
+            "listening.readonly listening.write localactivation";
+
+    private static String GRANT_TYPE = "authorization_code";
+
+    final String url = OAUTH_URL + "?client_id=" + CLIENT_ID
+            + "&state=xyz" + "&redirect_uri=" + CALLBACK_URL
+            + "&response_type=code" + "&scope=" + SCOPE;
 
     private static final String TAG = "MainActivity";
     SessionManager manager;
@@ -29,22 +45,69 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.v(TAG, "onCreate()");
-
         manager = new SessionManager(this);
 
-        Log.v(TAG, "token " + manager.getToken());
-        Log.v(TAG, "isLoggedin? " + manager.isLoggedIn());
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        Log.v(TAG, "onResume()");
 
         // if not logged in, start the login activity
         if (!manager.isLoggedIn()) {
-
             loginDialog = new LoginDialog();
             loginDialog.show(getSupportFragmentManager(), "dialog");
 
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            startActivity(intent);
+            Log.v(TAG, "not Logged in");
         }
+
+        Uri uri = getIntent().getData();
+        if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
+
+            String code = uri.getQueryParameter("code");
+            if (code != null) {
+
+                LoginService client = ServiceGenerator.createService(LoginService.class);
+
+                Call<AccessToken> call = client.getAccessToken(
+                        GRANT_TYPE,
+                        CLIENT_ID,
+                        CLIENT_SECRET,
+                        code,
+                        CALLBACK_URL);
+
+                call.enqueue(new Callback<AccessToken>() {
+
+                    @Override
+                    public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
+
+                        if (response.isSuccessful()) {
+                            String token = response.body().getAccessToken();
+
+                            manager.setToken(token);
+
+                            Log.v(TAG, "token=" + token);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<AccessToken> call, Throwable t) {
+                        Log.v(TAG, "onFailure ");
+                    }
+                });
+            } else if (uri.getQueryParameter("error") != null) {
+                // show an error message here
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        loginDialog.dismiss();
+        Log.v(TAG, "onPause()");
     }
 
     @Override
@@ -77,5 +140,19 @@ public class MainActivity extends AppCompatActivity
         Intent i = new Intent(this, DetailActivity.class);
         i.putExtra(PodcastSummaryFragment.PODCAST_ID, uri.toString());
         startActivity(i);
+    }
+
+    @Override
+    public void onClickLogin() {
+        Log.v(TAG, "onClickLogin()");
+
+        loginDialog.dismiss();
+
+        Intent intent = new Intent(
+                Intent.ACTION_VIEW,
+                Uri.parse(
+                        url));
+
+        startActivity(intent);
     }
 }

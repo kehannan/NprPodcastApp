@@ -21,18 +21,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
 
-        <service android:name=".api.PodcastFetchService" />
-
-        <provider
-            android:name=".provider.PodcastProvider"
-            android:authorities="com.hannan.kevin.provider"></provider>
-
-        <activity
-            android:name=".login.LoginActivity"
-            android:label="@string/title_activity_login2"
-            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -44,13 +33,17 @@
                     android:scheme="myapp" />
             </intent-filter>
         </activity>
+
+        <service android:name=".api.PodcastFetchService" />
+
+        <provider
+            android:name=".provider.PodcastProvider"
+            android:authorities="com.hannan.kevin.provider"></provider>
+
         <activity
             android:name=".DetailActivity"
             android:label="@string/title_activity_detail"></activity>
-        <activity
-            android:name=".PodcastDetailFragment"
-            android:label="@string/title_activity_podcast_detail_fragment"></activity>
-        <activity android:name=".LoginDialog"></activity>
+
     </application>
 
 </manifest>
