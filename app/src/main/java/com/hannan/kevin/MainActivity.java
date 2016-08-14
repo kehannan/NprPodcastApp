@@ -88,6 +88,9 @@ public class MainActivity extends AppCompatActivity
 
                             manager.setToken(token);
 
+                            //dismiss dialog after login
+                            loginDialog.dismiss();
+
                             Log.v(TAG, "token=" + token);
                         }
                     }

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hannan.kevin.api.PodcastFetchService;
+import com.hannan.kevin.login.SessionManager;
 import com.hannan.kevin.provider.DatabaseContract;
 
 
@@ -33,7 +34,8 @@ public class PodcastSummaryFragment extends Fragment
     PodcastRecyclerAdapter podcastRecyclerAdapter;
     RecyclerView recyclerView;
     Callback callback;
-    CollapsingToolbarLayout toolbarLayout;
+
+    SessionManager mSessionManager;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -50,7 +52,7 @@ public class PodcastSummaryFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
 
-        updatePodcasts();
+        //updatePodcasts();
         View rootView = inflater.inflate(R.layout.fragment_podcast_summary, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_podcasts);
@@ -88,7 +90,16 @@ public class PodcastSummaryFragment extends Fragment
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+
+        Log.v(TAG, "on attach");
+
         callback = (Callback)activity;
+
+        mSessionManager = new SessionManager(activity);
+
+        if (mSessionManager.isLoggedIn()) {
+            updatePodcasts();
+        }
     }
 
     // To handle the click on a view holder, defined in
@@ -116,7 +127,6 @@ public class PodcastSummaryFragment extends Fragment
                 null,                                           // selection argument
                 null                                            // Default sort order
         );
-
     }
 
     @Override
@@ -124,13 +134,11 @@ public class PodcastSummaryFragment extends Fragment
 
         Log.v(TAG, "onloadFinished()");
         podcastRecyclerAdapter.swapCursor(data);
-
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         //adapter.swapCursor(null);
         podcastRecyclerAdapter.swapCursor(null);
-
     }
 }
