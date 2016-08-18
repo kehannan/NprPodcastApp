@@ -52,7 +52,6 @@ public class PodcastSummaryFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
 
-        //updatePodcasts();
         View rootView = inflater.inflate(R.layout.fragment_podcast_summary, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_podcasts);
@@ -114,6 +113,7 @@ public class PodcastSummaryFragment extends Fragment
     private void updatePodcasts() {
         Intent intent = new Intent(getActivity(), PodcastFetchService.class);
         getActivity().startService(intent);
+        Log.v(TAG, "update podcast");
     }
 
     @Override

@@ -51,9 +51,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
         manager = new SessionManager(this);
-
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-
     }
 
     @Override
@@ -91,10 +89,10 @@ public class MainActivity extends AppCompatActivity
 
                             manager.setToken(token);
                             Log.v(TAG, "token=" + token);
-
-                            setIsLoading(false);
-                            showDialogIfNotLoad();
                         }
+
+                        setIsLoading(false);
+                        showDialogIfNotLoad();
                     }
 
                     @Override
@@ -194,7 +192,6 @@ public class MainActivity extends AppCompatActivity
         if (!isLoading() & !manager.isLoggedIn()) {
             loginDialog = new LoginDialog();
             loginDialog.show(getSupportFragmentManager(), "dialog");
-
         }
     }
 }

@@ -4,12 +4,14 @@ import android.app.IntentService;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
+
 import com.hannan.kevin.login.SessionManager;
-import com.hannan.kevin.model.Image;
 import com.hannan.kevin.model.ItemsList;
 import com.hannan.kevin.model.PodcastItem;
 import com.hannan.kevin.provider.DatabaseContract;
+
 import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -30,6 +32,7 @@ public class PodcastFetchService extends IntentService{
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        Log.v(TAG, "onHandleIntent");
         manager = new SessionManager(getApplicationContext());
         getApiData();
     }
@@ -54,7 +57,7 @@ public class PodcastFetchService extends IntentService{
                 if (response.isSuccessful()) {
                     Log.v(TAG, "success!");
 
-                    //interate through objects
+                    //iterate through objects
                     ArrayList<PodcastItem> podcastItems = response.body().getItemsList();
                     Log.v(TAG, "podcastItems size " + podcastItems.size());
 
