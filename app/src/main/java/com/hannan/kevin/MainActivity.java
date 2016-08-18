@@ -1,8 +1,10 @@
 package com.hannan.kevin;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -40,12 +42,17 @@ public class MainActivity extends AppCompatActivity
     SessionManager manager;
     LoginDialog loginDialog;
 
+    private static final String IS_LOADING = "is_loading";
+    private SharedPreferences mPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         manager = new SessionManager(this);
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 
     }
 
@@ -55,13 +62,8 @@ public class MainActivity extends AppCompatActivity
 
         Log.v(TAG, "onResume()");
 
-        // if not logged in, start the login activity
-        if (!manager.isLoggedIn()) {
-            loginDialog = new LoginDialog();
-            loginDialog.show(getSupportFragmentManager(), "dialog");
-
-            Log.v(TAG, "not Logged in");
-        }
+        // if login is not loading show the dialog
+        showDialogIfNotLoad();
 
         Uri uri = getIntent().getData();
         if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
@@ -80,6 +82,7 @@ public class MainActivity extends AppCompatActivity
 
                 call.enqueue(new Callback<AccessToken>() {
 
+
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
 
@@ -87,17 +90,19 @@ public class MainActivity extends AppCompatActivity
                             String token = response.body().getAccessToken();
 
                             manager.setToken(token);
-
-                            //dismiss dialog after login
-                            loginDialog.dismiss();
-
                             Log.v(TAG, "token=" + token);
+
+                            setIsLoading(false);
+                            showDialogIfNotLoad();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<AccessToken> call, Throwable t) {
                         Log.v(TAG, "onFailure ");
+
+                        setIsLoading(false);
+                        showDialogIfNotLoad();
                     }
                 });
             } else if (uri.getQueryParameter("error") != null) {
@@ -109,8 +114,13 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onPause() {
         super.onPause();
-        loginDialog.dismiss();
         Log.v(TAG, "onPause()");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.v(TAG, "onStop()");
     }
 
     @Override
@@ -149,7 +159,9 @@ public class MainActivity extends AppCompatActivity
     public void onClickLogin() {
         Log.v(TAG, "onClickLogin()");
 
+        // on click, dismiss the dialog and set isLoading flag
         loginDialog.dismiss();
+        setIsLoading(true);
 
         Intent intent = new Intent(
                 Intent.ACTION_VIEW,
@@ -157,5 +169,32 @@ public class MainActivity extends AppCompatActivity
                         url));
 
         startActivity(intent);
+    }
+
+    // check if login is loading
+    private boolean isLoading() {
+        boolean result = mPreferences.getBoolean(IS_LOADING, false);
+        return result;
+    }
+
+    // set whether login is loading or not
+    private void setIsLoading(boolean isLoading) {
+        SharedPreferences.Editor editor = mPreferences.edit();
+
+        editor.putBoolean(IS_LOADING, isLoading);
+        editor.commit();
+    }
+
+    // show the login dialog if not loading
+    private void showDialogIfNotLoad() {
+
+        Log.v(TAG, "showDialogIfNotLoad");
+
+        // show if it's not loading and if user is not logged in
+        if (!isLoading() & !manager.isLoggedIn()) {
+            loginDialog = new LoginDialog();
+            loginDialog.show(getSupportFragmentManager(), "dialog");
+
+        }
     }
 }
