@@ -94,6 +94,7 @@ public class PodcastProvider extends ContentProvider {
                 retCursor = sPodcastDbHelper.getReadableDatabase().query(
                         DatabaseContract.PodcastTable.PODCAST_TABLE,
                         null,null,null,null,null,null);
+                retCursor.setNotificationUri(getContext().getContentResolver(), uri);
                 return retCursor;
 
             case INDIVIDUAL_PODCAST:

@@ -103,20 +103,6 @@ public class PodcastFetchService extends IntentService{
             podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF,
                     podcastItem.getLinks().getImage().get(0).getHref());
 
-//            ArrayList<Image> imageList = (ArrayList<Image>) podcastItem.getLinks().getImage();
-//
-//            for (Image image : imageList) {
-//
-//                String rel = image.getRel();
-//
-//                if (rel.equals("square")) {
-//                    podcast_values.put(DatabaseContract.PodcastTable.IMAGE_HREF, image.getHref());
-//                }
-//
-//                if (rel.equals("brick")) {
-//                    podcast_values.put(DatabaseContract.PodcastTable.BRICK_HREF, image.getHref());
-//                }
-//            }
         } else {
             podcast_values.putNull(DatabaseContract.PodcastTable.IMAGE_HREF);
             Log.v(TAG, "image href empty");

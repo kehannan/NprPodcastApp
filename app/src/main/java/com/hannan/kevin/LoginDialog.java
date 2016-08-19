@@ -23,13 +23,6 @@ public class LoginDialog extends DialogFragment implements DialogInterface.OnCli
         builder.setTitle(R.string.dialog_title)
                 .setMessage(R.string.dialog_body)
                 .setPositiveButton(R.string.dialog_ok, this);
-//                .setPositiveButton(R.string.dialog_ok, new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int id) {
-//                        Intent intent = new Intent(getActivity(), LoginActivity.class);
-//                        startActivity(intent);
-//                    }
-//                });
-        // Create the AlertDialog object and return it
         return builder.create();
     }
 

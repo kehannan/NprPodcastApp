@@ -39,19 +39,28 @@ public class MainActivity extends AppCompatActivity
             + "&response_type=code" + "&scope=" + SCOPE;
 
     private static final String TAG = "MainActivity";
+
     SessionManager manager;
     LoginDialog loginDialog;
 
     private static final String IS_LOADING = "is_loading";
     private SharedPreferences mPreferences;
 
+    LoginInterface loginInterface;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         manager = new SessionManager(this);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        loginInterface = (LoginInterface)
+                getSupportFragmentManager().findFragmentById(R.id.summary_fragment);
+
+        Log.v(TAG, "onCreate()");
     }
 
     @Override
@@ -62,6 +71,7 @@ public class MainActivity extends AppCompatActivity
 
         // if login is not loading show the dialog
         showDialogIfNotLoad();
+
 
         Uri uri = getIntent().getData();
         if (uri != null && uri.toString().startsWith(CALLBACK_URL)) {
@@ -80,7 +90,6 @@ public class MainActivity extends AppCompatActivity
 
                 call.enqueue(new Callback<AccessToken>() {
 
-
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
 
@@ -89,6 +98,8 @@ public class MainActivity extends AppCompatActivity
 
                             manager.setToken(token);
                             Log.v(TAG, "token=" + token);
+
+                            loginInterface.onLogin();
                         }
 
                         setIsLoading(false);

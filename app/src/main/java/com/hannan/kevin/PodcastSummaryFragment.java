@@ -24,7 +24,8 @@ import com.hannan.kevin.provider.DatabaseContract;
 
 
 public class PodcastSummaryFragment extends Fragment
-        implements LoaderManager.LoaderCallbacks<Cursor>, PodcastRecyclerAdapter.PodcastRecyclerAdapterOnClickHandler {
+        implements LoaderManager.LoaderCallbacks<Cursor>, PodcastRecyclerAdapter.PodcastRecyclerAdapterOnClickHandler,
+        LoginInterface {
 
     private static final String TAG = "PodcastSummaryFragment";
 
@@ -66,7 +67,7 @@ public class PodcastSummaryFragment extends Fragment
         recyclerView.setHasFixedSize(true);
 
         // loader
-        getLoaderManager().initLoader(PODCAST_LOADER, null, this);
+         getLoaderManager().initLoader(PODCAST_LOADER, null, this);
 
         CoordinatorLayout coordinatorLayout = (CoordinatorLayout) rootView.findViewById(R.id.coordinator_layout);
 
@@ -94,11 +95,7 @@ public class PodcastSummaryFragment extends Fragment
 
         callback = (Callback)activity;
 
-        mSessionManager = new SessionManager(activity);
 
-        if (mSessionManager.isLoggedIn()) {
-            updatePodcasts();
-        }
     }
 
     // To handle the click on a view holder, defined in
@@ -140,5 +137,10 @@ public class PodcastSummaryFragment extends Fragment
     public void onLoaderReset(Loader<Cursor> loader) {
         //adapter.swapCursor(null);
         podcastRecyclerAdapter.swapCursor(null);
+    }
+
+    public void onLogin() {
+        updatePodcasts();
+
     }
 }
