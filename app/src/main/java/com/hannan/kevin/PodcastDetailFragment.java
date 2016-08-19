@@ -16,6 +16,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -44,7 +45,6 @@ public class PodcastDetailFragment extends Fragment
 
     // UI elements
 
-    private RelativeLayout mRelativeLayout;
     private LinearLayout mLinearLayout;
 
     Toolbar toolbar;
@@ -59,7 +59,6 @@ public class PodcastDetailFragment extends Fragment
     private ImageButton play_pause;
     private ImageButton forward30;
     private ImageButton back30;
-    //private ImageView back30;
 
     // Handler to update UI timer, progress bar etc,.
     private Handler mHandler = new Handler();
@@ -70,6 +69,10 @@ public class PodcastDetailFragment extends Fragment
     private static int THIRTY_SECONDS = 30 * 1000; // in milliseconds
     private MediaPlayer mp;
     private Uri audioHref;
+
+    View rootView;
+
+    private boolean isReady = false;
 
     public PodcastDetailFragment() {
     }
@@ -83,12 +86,11 @@ public class PodcastDetailFragment extends Fragment
 
         mUri = Uri.parse(args.getString(PodcastSummaryFragment.PODCAST_ID));
 
-        View rootView = inflater.inflate(R.layout.fragment_podcast_detail, container, false);
+        rootView = inflater.inflate(R.layout.fragment_podcast_detail, container, false);
 
         // loader
         getLoaderManager().initLoader(PODCAST_DETAIL_LOADER, null, this);
 
-        mRelativeLayout = (RelativeLayout) rootView.findViewById(R.id.layout_body);
         mLinearLayout = (LinearLayout) rootView.findViewById(R.id.detail_frag);
 
         mPhotoView = (ImageView) rootView.findViewById(R.id.photo);
@@ -122,10 +124,8 @@ public class PodcastDetailFragment extends Fragment
             public void onClick(View view) {
                 if (mp.isPlaying()){
                     pause();
-                    play_pause.setImageResource(R.drawable.ic_pause);
                 } else {
                     play();
-                    play_pause.setImageResource(R.drawable.ic_play_arrow);
                 }
             }
         });
@@ -144,6 +144,8 @@ public class PodcastDetailFragment extends Fragment
 
         songProgressBar.setOnSeekBarChangeListener(this);
 
+        rootView.setVisibility(View.INVISIBLE);
+
         return rootView;
     }
 
@@ -154,14 +156,20 @@ public class PodcastDetailFragment extends Fragment
     }
 
     private void play() {
-        mp.start();
 
-        // set Progress bar values
-        songProgressBar.setProgress(0);
-        songProgressBar.setMax(100);
+        if (isReady) {
+            mp.start();
 
-        // Updating progress bar
-        updateProgressBar();
+            // set Progress bar values
+            songProgressBar.setProgress(0);
+            songProgressBar.setMax(100);
+
+            // Updating progress bar
+            updateProgressBar();
+            play_pause.setImageResource(R.drawable.ic_pause);
+        } else {
+            showWarning();
+        }
     }
 
     public void updateProgressBar() {
@@ -216,8 +224,13 @@ public class PodcastDetailFragment extends Fragment
     }
 
     private void forward30() {
-        int currentPosition = mp.getCurrentPosition();
-        mp.seekTo(currentPosition + THIRTY_SECONDS);
+
+        if (isReady) {
+            int currentPosition = mp.getCurrentPosition();
+            mp.seekTo(currentPosition + THIRTY_SECONDS);
+        } else {
+            showWarning();
+        }
     }
 
     private void back30() {
@@ -227,6 +240,7 @@ public class PodcastDetailFragment extends Fragment
 
     private void pause() {
         mp.pause();
+        play_pause.setImageResource(R.drawable.ic_play_arrow);
     }
 
     private void stop() {
@@ -253,7 +267,6 @@ public class PodcastDetailFragment extends Fragment
             mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mp.setDataSource(getActivity(), audioHref);
             mp.prepareAsync(); // prepare async to not block main thread
-            //mp.setOnCompletionListener(this);
         }
         catch (Throwable t) {
             goBlooey(t);
@@ -263,18 +276,12 @@ public class PodcastDetailFragment extends Fragment
     @Override
     public void onPrepared(MediaPlayer player) {
         //mp.start();
+
+        isReady = true;
         mp.setOnCompletionListener(this);
     }
 
     private void goBlooey(Throwable t) {
-//        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-//
-//        builder
-//                .setTitle("Exception!")
-//                .setMessage(t.toString())
-//                .setPositiveButton("OK", null)
-//                .show();
-
         Log.v(TAG, "exception " + t.toString());
     }
 
@@ -305,6 +312,8 @@ public class PodcastDetailFragment extends Fragment
 
         audioHref = Uri.parse(data.getString(2));
 
+        setup();
+
         String imageHref = data.getString(3);
         if (imageHref != null) {
             Picasso.with(getActivity()).load(imageHref)
@@ -330,7 +339,7 @@ public class PodcastDetailFragment extends Fragment
             ex.printStackTrace();
         }
         mDateView.setText(formattedDate);
-        setup();
+
     }
 
     @Override
@@ -422,6 +431,15 @@ public class PodcastDetailFragment extends Fragment
 
         toolbar.getNavigationIcon().setColorFilter(
                 new PorterDuffColorFilter(bodyTextColor, PorterDuff.Mode.SRC_IN));
-       }
 
+        rootView.setVisibility(View.VISIBLE);
+    }
+
+    private void showWarning(){
+
+        Snackbar snackbar = Snackbar.make(
+                rootView, "The podcast is still loading. Try again in a few seconds.", Snackbar.LENGTH_SHORT);
+        snackbar.show();
+
+    }
 }

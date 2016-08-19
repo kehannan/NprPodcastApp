@@ -1,5 +1,6 @@
 package com.hannan.kevin;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -159,9 +160,25 @@ public class MainActivity extends AppCompatActivity
     public void onItemSelected(Uri uri) {
         Log.v(TAG, "onItemSelected " + uri);
 
-        Intent i = new Intent(this, DetailActivity.class);
-        i.putExtra(PodcastSummaryFragment.PODCAST_ID, uri.toString());
-        startActivity(i);
+        if (findViewById(R.id.summary_container) != null) {
+
+            Log.v(TAG, "summary container not null ");
+
+            PodcastDetailFragment podcastDetailFragment = new PodcastDetailFragment();
+            Bundle args = new Bundle();
+
+            args.putString(PodcastSummaryFragment.PODCAST_ID, uri.toString());
+            podcastDetailFragment.setArguments(args);
+
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.summary_container, podcastDetailFragment);
+            ft.commit();
+
+        } else {
+            Intent i = new Intent(this, DetailActivity.class);
+            i.putExtra(PodcastSummaryFragment.PODCAST_ID, uri.toString());
+            startActivity(i);
+        }
     }
 
     @Override
