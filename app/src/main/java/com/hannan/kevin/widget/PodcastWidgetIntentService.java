@@ -52,6 +52,19 @@ public class PodcastWidgetIntentService extends IntentService {
         String title = data.getString(1);
         String audio_href = data.getString(2);
 
+//        Intent updateWidgetIntent = new Intent(this, PodcastWidgetProvider.class);
+//        updateWidgetIntent.putExtra("title", title);
+//        updateWidgetIntent.putExtra(MusicService.AUDIO_HREF, audio_href);
+//
+//        PendingIntent pUpdateWidgetIntent =
+//                PendingIntent.getBroadcast(this, 0, updateWidgetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+//
+//        try {
+//            pUpdateWidgetIntent.send();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         for (int appWidgetId : appWidgetIds) {
 
             Log.v(TAG, "in addwidgetid for loop");
@@ -60,12 +73,20 @@ public class PodcastWidgetIntentService extends IntentService {
 
             views.setTextViewText(R.id.title_widget, title);
 
-            Intent playPauseIntent = new Intent(this, MusicService.class);
-            playPauseIntent.putExtra(MusicService.AUDIO_HREF, audio_href);
+            Intent updateWidgetIntent = new Intent(this, PodcastWidgetProvider.class);
+            updateWidgetIntent.putExtra(MusicService.AUDIO_HREF, audio_href);
 
-            PendingIntent playPausePendingIntent =
-                    PendingIntent.getService(this, 0, playPauseIntent, 0);
-            views.setOnClickPendingIntent(R.id.play_pause_button_widget, playPausePendingIntent);
+            PendingIntent pUpdateWidgetIntent =
+                PendingIntent.getBroadcast(this, 0, updateWidgetIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+//            Intent playPauseIntent = new Intent(this, MusicService.class);
+//            playPauseIntent.putExtra(MusicService.AUDIO_HREF, audio_href);
+
+//            PendingIntent playPausePendingIntent =
+//                    PendingIntent.getService(this, 0, playPauseIntent, 0);
+
+
+            views.setOnClickPendingIntent(R.id.play_pause_button_widget, pUpdateWidgetIntent);
 
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }

@@ -15,8 +15,11 @@ import android.util.Log;
 public class MusicService extends Service implements MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener {
 
-    private static final String TAG = "MuscService";
+    private static final String TAG = "MusicService";
     public static final String AUDIO_HREF = "audio_href";
+    public static final String PLAY_STATE = "play_state";
+
+    public static final String IS_PLAYING = "is_playing";
 
     private String audio_href;
     private MediaPlayer mp;
@@ -57,6 +60,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     private void play() {
         mp.start();
+        isPlayingCallback();
     }
 
     private void throwPlayerException(Throwable t) {
@@ -65,6 +69,17 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     @Override
     public void onCompletion(MediaPlayer mp) {
+    }
+
+    private void isPlayingCallback() {
+        Intent intent = new Intent(IS_PLAYING);
+        sendBroadcast(intent);
+    }
+
+    public void onReceive() {
+
+
+
     }
 
     @Nullable
