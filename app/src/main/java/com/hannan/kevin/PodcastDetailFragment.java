@@ -1,6 +1,5 @@
 package com.hannan.kevin;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
@@ -25,7 +24,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -251,7 +249,7 @@ public class PodcastDetailFragment extends Fragment
             mp.seekTo(0);
         }
         catch (Throwable t) {
-            goBlooey(t);
+            throwPlayerException(t);
         }
     }
 
@@ -269,7 +267,7 @@ public class PodcastDetailFragment extends Fragment
             mp.prepareAsync(); // prepare async to not block main thread
         }
         catch (Throwable t) {
-            goBlooey(t);
+            throwPlayerException(t);
         }
     }
 
@@ -281,7 +279,7 @@ public class PodcastDetailFragment extends Fragment
         mp.setOnCompletionListener(this);
     }
 
-    private void goBlooey(Throwable t) {
+    private void throwPlayerException(Throwable t) {
         Log.v(TAG, "exception " + t.toString());
     }
 
