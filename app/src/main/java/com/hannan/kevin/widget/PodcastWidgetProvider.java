@@ -8,9 +8,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.RemoteViews;
+
+import com.hannan.kevin.MessageEvent;
+import com.hannan.kevin.MusicService;
 import com.hannan.kevin.R;
 
-import com.hannan.kevin.MusicService;
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by kehannan on 8/19/16.
@@ -94,10 +97,14 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
                     views.setOnClickPendingIntent(R.id.play_pause_button_widget, clickListenerPendingIntent);
                 }
 
-                Intent pauseIntent = new Intent();
-                intent.setAction(MusicService.PAUSE_INTENT);
+                EventBus.getDefault().post(new MessageEvent(MusicService.PAUSE));
 
-                context.sendBroadcast(pauseIntent);
+//                Intent pauseIntent = new Intent();
+//                intent.setAction(MusicService.PAUSE_INTENT);
+//
+//                context.sendBroadcast(pauseIntent);
+
+
             }
 
             if (play_pause_state.equals("play")) {
@@ -107,7 +114,16 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
                     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
                     views.setImageViewResource(R.id.play_pause_button_widget, R.drawable.ic_pause);
                     appWidgetManager.updateAppWidget(appWidgetId, views);
+
+                    Intent clickListenerIntent = new Intent(context, PodcastWidgetProvider.class);
+                    clickListenerIntent.putExtra(PLAY_PAUSE_ACTION, "pause");
+
+                    PendingIntent clickListenerPendingIntent =
+                            PendingIntent.getBroadcast(context, 0, clickListenerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    views.setOnClickPendingIntent(R.id.play_pause_button_widget, clickListenerPendingIntent);
                 }
+
+                EventBus.getDefault().post(new MessageEvent(MusicService.PLAY));
 
             }
         }
