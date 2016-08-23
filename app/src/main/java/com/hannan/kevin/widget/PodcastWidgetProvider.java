@@ -18,28 +18,12 @@ import com.hannan.kevin.MusicService;
 public class PodcastWidgetProvider extends AppWidgetProvider {
 
     private static final String TAG = "PodcastWidgetProvider";
+    private static final String PLAY_PAUSE_ACTION = "play_pause_action";
 
-    MusicService musicService;
-
+    MusicService mMusicService;
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-
-
-
         context.startService(new Intent(context, PodcastWidgetIntentService.class));
-
-        // Get all widget ids
-//        ComponentName thisWidget = new ComponentName(context,
-//                PodcastWidgetProvider.class);
-//        int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
-
-        // Build the intent to call the update service
-//        Intent intent = new Intent(context.getApplicationContext(),
-//                UpdateWidgetService.class);
-//        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, allWidgetIds);
-
-        // Update the widgets via the service
-//        context.startService(intent);
     }
 
     @Override
@@ -55,7 +39,9 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
 
 
         String audio_href = intent.getStringExtra(MusicService.AUDIO_HREF);
-        String play_state =  intent.getStringExtra(MusicService.PLAY_STATE);
+        String play_pause_state =  intent.getStringExtra(PodcastWidgetProvider.PLAY_PAUSE_ACTION);
+
+        Log.v(TAG, "play_pause_state " + play_pause_state);
 
         // if getting audio url, start music service
         if (audio_href != null) {
@@ -75,15 +61,56 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
             for (int appWidgetId : appWidgetIds) {
 
                 RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
-
                 views.setImageViewResource(R.id.play_pause_button_widget, R.drawable.ic_pause);
-
                 appWidgetManager.updateAppWidget(appWidgetId, views);
 
+                Intent clickListenerIntent = new Intent(context, PodcastWidgetProvider.class);
+                clickListenerIntent.putExtra(PLAY_PAUSE_ACTION, "pause");
+
+                PendingIntent clickListenerPendingIntent =
+                        PendingIntent.getBroadcast(context, 0, clickListenerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                views.setOnClickPendingIntent(R.id.play_pause_button_widget, clickListenerPendingIntent);
+
+                appWidgetManager.updateAppWidget(appWidgetId, views);
             }
         }
 
-        Log.v(TAG, "onReceive " + audio_href);
+        if (play_pause_state != null ) {
+
+            if (play_pause_state.equals("pause")) {
+                Log.v(TAG, "paused");
+
+                for (int appWidgetId : appWidgetIds) {
+
+                    RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
+                    views.setImageViewResource(R.id.play_pause_button_widget, R.drawable.ic_play_arrow);
+                    appWidgetManager.updateAppWidget(appWidgetId, views);
+
+                    Intent clickListenerIntent = new Intent(context, PodcastWidgetProvider.class);
+                    clickListenerIntent.putExtra(PLAY_PAUSE_ACTION, "play");
+
+                    PendingIntent clickListenerPendingIntent =
+                            PendingIntent.getBroadcast(context, 0, clickListenerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    views.setOnClickPendingIntent(R.id.play_pause_button_widget, clickListenerPendingIntent);
+                }
+
+                Intent pauseIntent = new Intent();
+                intent.setAction(MusicService.PAUSE_INTENT);
+
+                context.sendBroadcast(pauseIntent);
+            }
+
+            if (play_pause_state.equals("play")) {
+
+                for (int appWidgetId : appWidgetIds) {
+
+                    RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
+                    views.setImageViewResource(R.id.play_pause_button_widget, R.drawable.ic_pause);
+                    appWidgetManager.updateAppWidget(appWidgetId, views);
+                }
+
+            }
+        }
     }
 
     @Override

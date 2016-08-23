@@ -36,7 +36,12 @@
 
         <service android:name=".api.PodcastFetchService" />
         <service android:name="com.hannan.kevin.widget.PodcastWidgetIntentService" />
-        <service android:name="MusicService" />
+        <service android:name="MusicService">
+            android:enabled="true"
+            <intent-filter>
+                <action android:name="com.hannan.kevin.PAUSE_INTENT" />
+            </intent-filter>
+        </service>
 
         <provider
             android:name=".provider.PodcastProvider"

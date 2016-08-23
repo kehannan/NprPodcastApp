@@ -1,7 +1,10 @@
 package com.hannan.kevin;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -21,8 +24,35 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
     public static final String IS_PLAYING = "is_playing";
 
+    public static final String PAUSE_INTENT = "com.hannan.kevin.PAUSE_INTENT";
+
     private String audio_href;
     private MediaPlayer mp;
+
+    @Override
+    public void onCreate() {
+
+        Log.v(TAG, "onCreate()");
+
+        BroadcastReceiver onNotice = new BroadcastReceiver() {
+
+
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                Log.v(TAG, "onReceive");
+
+                String extra = intent.getAction();
+                Log.v(TAG, extra);
+            }
+        };
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(PAUSE_INTENT);
+
+        registerReceiver(onNotice, filter);
+
+    }
 
     @Override
     public int onStartCommand (Intent intent, int flags, int startId) {
@@ -74,12 +104,6 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
     private void isPlayingCallback() {
         Intent intent = new Intent(IS_PLAYING);
         sendBroadcast(intent);
-    }
-
-    public void onReceive() {
-
-
-
     }
 
     @Nullable
