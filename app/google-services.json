@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "190403113539",
+    "firebase_url": "https://nprapp-a80bd.firebaseio.com",
+    "project_id": "nprapp-a80bd",
+    "storage_bucket": "nprapp-a80bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:190403113539:android:066edf687007fe57",
+        "android_client_info": {
+          "package_name": "com.hannan.kevin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "190403113539-4v4qpdaqe6um8qnn34gt1uklajs2rsbg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4TvVlgamIoLeBTM3iWlti1CWM7tTPXUM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

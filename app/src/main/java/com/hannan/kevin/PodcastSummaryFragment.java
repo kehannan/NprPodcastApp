@@ -18,6 +18,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.MobileAds;
 import com.hannan.kevin.api.PodcastFetchService;
 import com.hannan.kevin.login.SessionManager;
 import com.hannan.kevin.data.DatabaseContract;
@@ -35,8 +38,6 @@ public class PodcastSummaryFragment extends Fragment
     PodcastRecyclerAdapter podcastRecyclerAdapter;
     RecyclerView recyclerView;
     Callback callback;
-
-    SessionManager mSessionManager;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -80,6 +81,14 @@ public class PodcastSummaryFragment extends Fragment
         // http://stackoverflow.com/questions/31738831/how-to-change-collapsingtoolbarlayout-typeface-and-size
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
+
+        // Integrating admob
+        MobileAds.initialize(getActivity(), getResources().getString(R.string.app_id));
+
+        AdView mAdView = (AdView) rootView.findViewById(R.id.ad_view);
+
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         return rootView;
 
