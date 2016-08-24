@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Npr Podcast App</string>
+    <string name="app_name">NPR Podcast App</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_login">LoginActivity</string>
 
@@ -8,11 +8,16 @@
     <string name="title_activity_login2">LoginActivity2</string>
     <string name="title_activity_detail">DetailActivity</string>
 
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_podcast_detail_fragment">PodcastDetailFragment</string>
 
 
-    <string name="dialog_title">Login to Npr</string>
-    <string name="dialog_body">To use the podcast app you must first login through the Npr website.</string>
+    <string name="dialog_title">Login to NPR</string>
+    <string name="dialog_body">To use the podcast app you must first login through the NPR website.</string>
     <string name="dialog_ok">OK</string>
+
+
+    <string name="login_button">Login</string>
+    <string name="seek_back">Rewind 30 seconds</string>
+    <string name="play_pause">Play or pause</string>
+    <string name="seek_forward">Fast forward 30 seconds</string>
 </resources>

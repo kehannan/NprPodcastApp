@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_login2" tools:context="com.hannan.kevin.login.LoginActivity">
+    tools:context="com.hannan.kevin.login.LoginActivity">
 
     <TextView
     android:id="@+id/login_text"
@@ -19,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/login_button"
+        android:contentDescription="@string/login_button"
         />
 
 </RelativeLayout>
