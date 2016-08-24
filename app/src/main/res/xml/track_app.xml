@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="ga_trackingId">UA-83122071-1</string>
+    <bool name="ga_autoActivityTracking">true</bool>
+
+    <screenName name="com.hannan.kevin.MainActivity">
+       Podcast List
+    </screenName>
+    <screenName name="com.hannan.kevin.DetailActivity">
+        Podcast Detail
+    </screenName>
+
+</resources>
