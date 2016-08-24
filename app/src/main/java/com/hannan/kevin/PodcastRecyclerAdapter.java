@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.hannan.kevin.provider.DatabaseContract;
+import com.hannan.kevin.data.DatabaseContract;
 import com.squareup.picasso.Picasso;
 
 
@@ -25,10 +25,6 @@ public class PodcastRecyclerAdapter
 
     private static final String TAG = "PodcastRecyclerAdapter";
 
-    // constants for the view types
-//    private static final int VIEW_TYPE_COUNT = 2;
-//    private static final int VIEW_TYPE_IMAGE = 0;
-//    private static final int VIEW_TYPE_NO_IMAGE = 1;
 
     private Cursor mCursor;
     private Context context;

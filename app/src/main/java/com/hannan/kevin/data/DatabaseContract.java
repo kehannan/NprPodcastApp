@@ -1,4 +1,4 @@
-package com.hannan.kevin.provider;
+package com.hannan.kevin.data;
 
 import android.content.ContentUris;
 import android.net.Uri;
@@ -14,7 +14,7 @@ public class DatabaseContract {
 
 
     //URI data
-    public static final String CONTENT_AUTHORITY = "com.hannan.kevin.provider";
+    public static final String CONTENT_AUTHORITY = "com.hannan.kevin.data.PodcastProvider";
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
     public static final String PODCASTS = "podcasts";

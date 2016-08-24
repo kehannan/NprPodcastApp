@@ -44,8 +44,8 @@
         </service>
 
         <provider
-            android:name=".provider.PodcastProvider"
-            android:authorities="com.hannan.kevin.provider"></provider>
+            android:name=".data.PodcastProvider"
+            android:authorities="com.hannan.kevin.data.PodcastProvider"></provider>
 
         <activity
             android:name=".DetailActivity"

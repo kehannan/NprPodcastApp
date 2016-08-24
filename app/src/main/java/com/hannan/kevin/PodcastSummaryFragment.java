@@ -20,7 +20,7 @@ import android.view.ViewGroup;
 
 import com.hannan.kevin.api.PodcastFetchService;
 import com.hannan.kevin.login.SessionManager;
-import com.hannan.kevin.provider.DatabaseContract;
+import com.hannan.kevin.data.DatabaseContract;
 
 
 public class PodcastSummaryFragment extends Fragment

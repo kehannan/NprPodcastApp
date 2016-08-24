@@ -5,10 +5,10 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.util.Log;
 
+import com.hannan.kevin.data.DatabaseContract;
 import com.hannan.kevin.login.SessionManager;
 import com.hannan.kevin.model.ItemsList;
 import com.hannan.kevin.model.PodcastItem;
-import com.hannan.kevin.provider.DatabaseContract;
 
 import java.util.ArrayList;
 

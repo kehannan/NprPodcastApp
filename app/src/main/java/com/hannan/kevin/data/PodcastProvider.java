@@ -1,4 +1,4 @@
-package com.hannan.kevin.provider;
+package com.hannan.kevin.data;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -9,6 +9,9 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
+import com.hannan.kevin.data.DatabaseContract;
+import com.hannan.kevin.data.PodcastDbHelper;
 
 /**
  * Created by khannan on 7/2/16.

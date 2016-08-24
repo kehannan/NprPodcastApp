@@ -1,11 +1,11 @@
-package com.hannan.kevin.provider;
+package com.hannan.kevin.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.hannan.kevin.provider.DatabaseContract.PodcastTable;
+import com.hannan.kevin.data.DatabaseContract.PodcastTable;
 
 /**
  * Created by khannan on 7/3/16.

@@ -12,10 +12,16 @@
 
     <TextView
         android:id="@+id/title_widget"
-        android:layout_width="156dp"
-        android:layout_height="match_parent"
+        android:layout_width="222dp"
+        android:layout_height="wrap_content"
         android:textColor="@color/icons"
-        android:layout_gravity="center" />
+        android:fontFamily="sans-serif"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:paddingEnd="8dp"
+        android:textSize="16dp"
+        android:layout_centerVertical="true"
+        />
 
     <ImageButton
         android:id="@+id/play_pause_button_widget"
@@ -23,8 +29,8 @@
         android:layout_height="50dp"
         android:scaleType="centerCrop"
         android:enabled="false"
-        android:layout_gravity="center"
         android:background="@android:color/transparent"
+        android:layout_centerVertical="true"
         android:layout_toEndOf="@id/title_widget" />
 
     </RelativeLayout>

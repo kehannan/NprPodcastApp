@@ -23,7 +23,6 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
     private static final String TAG = "PodcastWidgetProvider";
     private static final String PLAY_PAUSE_ACTION = "play_pause_action";
 
-    MusicService mMusicService;
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         context.startService(new Intent(context, PodcastWidgetIntentService.class));
@@ -32,7 +31,6 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-
 
         ComponentName thisWidget = new ComponentName(context,
                 PodcastWidgetProvider.class);
@@ -43,8 +41,6 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
 
         String audio_href = intent.getStringExtra(MusicService.AUDIO_HREF);
         String play_pause_state =  intent.getStringExtra(PodcastWidgetProvider.PLAY_PAUSE_ACTION);
-
-        Log.v(TAG, "play_pause_state " + play_pause_state);
 
         // if getting audio url, start music service
         if (audio_href != null) {
@@ -98,13 +94,6 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
                 }
 
                 EventBus.getDefault().post(new MessageEvent(MusicService.PAUSE));
-
-//                Intent pauseIntent = new Intent();
-//                intent.setAction(MusicService.PAUSE_INTENT);
-//
-//                context.sendBroadcast(pauseIntent);
-
-
             }
 
             if (play_pause_state.equals("play")) {
@@ -124,7 +113,6 @@ public class PodcastWidgetProvider extends AppWidgetProvider {
                 }
 
                 EventBus.getDefault().post(new MessageEvent(MusicService.PLAY));
-
             }
         }
     }
