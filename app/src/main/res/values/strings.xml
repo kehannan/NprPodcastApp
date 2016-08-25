@@ -24,4 +24,9 @@
     <string name="app_id">ca-app-pub-7075430750374393~4304464265</string>
 
     <string name="banner_ad_unit_id">ca-app-pub-7075430750374393/5781197460</string>
+
+    <string name="settings_text">You are logged in. To logout, click the button.</string>
+
+    <string name="settings_activity">Settings</string>
+    <string name="logout_button">Logout</string>
 </resources>

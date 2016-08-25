@@ -3,6 +3,7 @@ package com.hannan.kevin;
 import android.app.Fragment;
 import android.app.LoaderManager;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 
@@ -16,9 +17,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -76,6 +82,12 @@ public class PodcastDetailFragment extends Fragment
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -107,8 +119,11 @@ public class PodcastDetailFragment extends Fragment
 
         // toolbar
         toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
-
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+        ActionBar mActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+        mActionBar.setDisplayShowTitleEnabled(false);
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +160,25 @@ public class PodcastDetailFragment extends Fragment
         rootView.setVisibility(View.INVISIBLE);
 
         return rootView;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
+                getActivity().startActivity(settingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     @Override
@@ -430,11 +464,23 @@ public class PodcastDetailFragment extends Fragment
         toolbar.getNavigationIcon().setColorFilter(
                 new PorterDuffColorFilter(bodyTextColor, PorterDuff.Mode.SRC_IN));
 
+        setOverflowIconColor(bodyTextColor);
+
         rootView.setVisibility(View.VISIBLE);
     }
 
-    private void showWarning(){
+    private void setOverflowIconColor(int color) {
+        Drawable overflowIcon = toolbar.getOverflowIcon();
 
+        if (overflowIcon != null) {
+            Drawable newIcon = overflowIcon.mutate();
+            newIcon.setColorFilter(color, PorterDuff.Mode.MULTIPLY);
+            toolbar.setOverflowIcon(newIcon);
+        }
+    }
+
+
+    private void showWarning(){
         Snackbar snackbar = Snackbar.make(
                 rootView, "The podcast is still loading. Try again in a few seconds.", Snackbar.LENGTH_SHORT);
         snackbar.show();

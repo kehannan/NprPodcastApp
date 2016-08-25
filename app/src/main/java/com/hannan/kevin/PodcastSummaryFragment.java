@@ -3,6 +3,7 @@ package com.hannan.kevin;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -11,10 +12,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,7 +29,6 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.hannan.kevin.api.PodcastFetchService;
-import com.hannan.kevin.login.SessionManager;
 import com.hannan.kevin.data.DatabaseContract;
 
 
@@ -38,6 +44,7 @@ public class PodcastSummaryFragment extends Fragment
     PodcastRecyclerAdapter podcastRecyclerAdapter;
     RecyclerView recyclerView;
     Callback callback;
+    Toolbar toolbar;
 
     /**
      * A callback interface that all activities containing this fragment must
@@ -49,6 +56,12 @@ public class PodcastSummaryFragment extends Fragment
     }
 
     public PodcastSummaryFragment() {
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
     }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -82,6 +95,11 @@ public class PodcastSummaryFragment extends Fragment
         collapsingToolbar.setExpandedTitleTextAppearance(R.style.ExpandedAppBar);
         collapsingToolbar.setCollapsedTitleTextAppearance(R.style.CollapsedAppBar);
 
+        // toolbar
+        toolbar = (Toolbar) rootView.findViewById(R.id.toolbar);
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+
+
         // Integrating admob
         MobileAds.initialize(getActivity(), getResources().getString(R.string.app_id));
 
@@ -101,10 +119,7 @@ public class PodcastSummaryFragment extends Fragment
         super.onAttach(activity);
 
         Log.v(TAG, "on attach");
-
         callback = (Callback)activity;
-
-
     }
 
     // To handle the click on a view holder, defined in
@@ -150,6 +165,27 @@ public class PodcastSummaryFragment extends Fragment
 
     public void onLogin() {
         updatePodcasts();
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_detail, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        Log.v(TAG, "onOpionsItemSelected");
+
+        switch(item.getItemId()) {
+            case R.id.action_settings:
+                Log.v(TAG, "action settings");
+                Intent settingsIntent = new Intent(getActivity(), SettingsActivity.class);
+                getActivity().startActivity(settingsIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

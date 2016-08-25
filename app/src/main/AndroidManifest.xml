@@ -23,13 +23,11 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -37,6 +35,17 @@
                     android:host="callback"
                     android:scheme="myapp" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".DetailActivity"
+            android:label="@string/title_activity_detail" />
+
+        <activity android:name=".SettingsActivity"
+            android:label="@string/settings_activity">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity" />
         </activity>
 
         <service android:name=".api.PodcastFetchService" />
@@ -52,9 +61,7 @@
             android:name=".data.PodcastProvider"
             android:authorities="com.hannan.kevin.data.PodcastProvider"></provider>
 
-        <activity
-            android:name=".DetailActivity"
-            android:label="@string/title_activity_detail"></activity>
+
 
         <receiver android:name=".widget.PodcastWidgetProvider" >
             <intent-filter>

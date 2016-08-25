@@ -2,7 +2,6 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/detail_frag"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -15,7 +14,7 @@
         android:elevation="4dp"/>
 
     <ImageView
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:id="@+id/photo"
         android:layout_width="200dp"
         android:layout_height="200dp"
@@ -32,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="4dp">
 
             <TextView
                 android:id="@+id/program"
@@ -46,7 +45,7 @@
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-medium"
                 android:textSize="24sp"
                 android:layout_below="@id/program"/>
@@ -55,7 +54,7 @@
                 android:id="@+id/description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif"
                 android:textSize="16sp"
                 android:ellipsize="end"
@@ -66,7 +65,7 @@
                 android:id="@+id/podcast_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif"
                 android:textSize="16sp"
                 android:layout_below="@id/description"/>

@@ -48,9 +48,11 @@ public class SessionManager {
 
     public boolean isLoggedIn() {
         String token = getToken();
-        if (token != "") {
+        if (!token.equals("")) {
+            Log.v(TAG, "islogged in = true");
             return true;
         } else {
+            Log.v(TAG, "is logged in = false");
             return false;
         }
     }
